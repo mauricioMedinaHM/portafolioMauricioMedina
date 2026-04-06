@@ -158,6 +158,8 @@
     #hero-btns .btn-primary,
     #hero-btns .btn-ghost { padding:9px 12px !important; font-size:10px !important; letter-spacing:.06em !important; }
     #hero-btns .btn-whatsapp { padding:9px 10px !important; font-size:10px !important; letter-spacing:.06em !important; }
+    #carousel-track { height:260px !important; }
+    #carousel-thumbs { grid-template-columns:repeat(auto-fill,minmax(64px,1fr)) !important; }
   }
 
   .tech-card { position: relative; overflow: hidden; }
@@ -751,7 +753,7 @@
           <p class="font-label text-xs text-primary uppercase tracking-widest mb-6" data-i18n="cuyo_tagline">Comunidad de builders en IA, tecnología y web3</p>
           <p class="text-secondary font-body text-base leading-relaxed mb-4" data-i18n="cuyo_desc1">CuyoConnect es la comunidad de builders en IA, tecnología y encuentros presenciales del ecosistema Cuyo. Conectamos talento local con oportunidades globales descentralizadas a través de educación, networking y soporte técnico.</p>
           <p class="text-on-surface-variant font-body text-sm leading-relaxed mb-8" data-i18n="cuyo_desc2">Organizamos eventos, hackathons y meetups presenciales en Mendoza para crecer el ecosistema Web3 y tecnológico de la región.</p>
-          <a href="https://cuyoconnect-site.vercel.app/" target="_blank" class="flex items-center gap-2 text-primary font-label text-sm group w-fit">
+          <a href="https://cuyoconnect.com/" target="_blank" class="flex items-center gap-2 text-primary font-label text-sm group w-fit">
             <span data-i18n="cuyo_cta">VISITAR_PLATAFORMA</span>
             <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="square" d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
@@ -781,6 +783,163 @@
     </div>
   </div>
 </section>
+
+<!-- ═══════════════════════════════════════
+  COMMUNITY_LOG / CAROUSEL
+═══════════════════════════════════════ -->
+<section id="community" class="py-24 px-6 md:px-12 lg:px-24" style="background:#0e0e0e;">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex items-center gap-4 mb-16 reveal">
+      <h2 class="sec-title" data-i18n="community_title">COMMUNITY_LOG</h2>
+      <div class="divider"></div>
+    </div>
+    <p class="font-label text-xs text-outline uppercase tracking-widest text-center mb-12 reveal" style="transition-delay:.1s;" data-i18n="community_sub">Eventos · Charlas · Mentoring · Comunidad</p>
+
+    <!-- Carousel wrapper -->
+    <div class="relative reveal mx-auto" id="carousel-section" style="max-width:860px;">
+
+      <!-- Main image display -->
+      <div class="relative overflow-hidden" style="background:#000;border:1px solid rgba(73,72,71,.3);">
+        <!-- Terminal header bar -->
+        <div class="term-header" style="border-bottom:1px solid rgba(73,72,71,.3);">
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
+          <div class="term-dot"></div>
+          <span class="font-label text-xs text-outline ml-3 uppercase tracking-widest" id="carousel-label">img_01.jpg</span>
+          <span class="font-label text-xs ml-auto" style="color:#9146ff;" id="carousel-counter">01 / 07</span>
+        </div>
+
+        <!-- Slides -->
+        <div class="relative" style="height:520px;" id="carousel-track">
+          <!-- Images injected via JS -->
+        </div>
+
+        <!-- Left arrow -->
+        <button id="carousel-prev" onclick="carouselMove(-1)" aria-label="Anterior"
+          class="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center transition-all"
+          style="width:44px;height:44px;background:rgba(0,0,0,.7);border:1px solid rgba(193,156,255,.25);color:#c19cff;margin-top:20px;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="square" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+
+        <!-- Right arrow -->
+        <button id="carousel-next" onclick="carouselMove(1)" aria-label="Siguiente"
+          class="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex items-center justify-center transition-all"
+          style="width:44px;height:44px;background:rgba(0,0,0,.7);border:1px solid rgba(193,156,255,.25);color:#c19cff;margin-top:20px;">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="square" d="M9 5l7 7-7 7"/></svg>
+        </button>
+
+        <!-- Caption overlay -->
+        <div class="absolute bottom-0 left-0 right-0 z-10 p-4" style="background:linear-gradient(to top,rgba(0,0,0,.85) 0%,transparent 100%);">
+          <p class="font-label text-xs text-on-surface-variant uppercase tracking-widest text-center" id="carousel-caption">◈ CuyoConnect — Mendoza, ARG</p>
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="flex justify-center gap-2 mt-6" id="carousel-dots"></div>
+
+      <!-- Thumbnails strip -->
+      <div class="grid mt-4 gap-2" id="carousel-thumbs" style="grid-template-columns:repeat(auto-fill,minmax(88px,1fr));"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  const slides = [
+    { src:"desing/img/carrusel/Cuyo_Connet_017.jpg",   label:"cuyo_connect_017.jpg",  caption:"◈ CuyoConnect — Evento presencial · Mendoza, ARG" },
+    { src:"desing/img/carrusel/Cuyo_Connet_016.jpeg",  label:"cuyo_connect_016.jpeg", caption:"◈ CuyoConnect — Comunidad Web3 · Mendoza, ARG" },
+    { src:"desing/img/carrusel/CharlaInitroWEb3.jpeg", label:"charla_web3.jpeg",       caption:"◈ Charla — Intro a Web3 · Charla presencial" },
+    { src:"desing/img/carrusel/mento.jpg",             label:"mentoring.jpg",          caption:"◈ Mentoring — Guiando nuevos devs" },
+    { src:"desing/img/carrusel/mentorStellar.jpeg",    label:"mentor_stellar.jpeg",    caption:"◈ Mentor Stellar · Ecosistema Blockchain" },
+    { src:"desing/img/carrusel/Copia de _DSC7385ig.jpg", label:"event_photo.jpg",     caption:"◈ Evento comunidad · Mauricio Medina" },
+    { src:"desing/img/carrusel/mauricioFotoPerfil.jpg",label:"perfil.jpg",             caption:"◈ Mauricio Medina · Web3 Protocol Architect" },
+  ];
+
+  let current = 0;
+  let timer;
+
+  const track   = document.getElementById('carousel-track');
+  const dots    = document.getElementById('carousel-dots');
+  const thumbs  = document.getElementById('carousel-thumbs');
+  const label   = document.getElementById('carousel-label');
+  const counter = document.getElementById('carousel-counter');
+  const caption = document.getElementById('carousel-caption');
+
+  // Build slides
+  slides.forEach((s, i) => {
+    const div = document.createElement('div');
+    div.className = 'absolute inset-0 transition-opacity duration-700';
+    div.style.cssText = 'opacity:0;z-index:1;';
+    div.innerHTML = `<img src="${s.src}" alt="${s.caption}" style="width:100%;height:100%;object-fit:cover;object-position:center top;">`;
+    track.appendChild(div);
+
+    // Dot
+    const dot = document.createElement('button');
+    dot.style.cssText = 'width:8px;height:8px;border-radius:50%;background:#494847;border:none;cursor:pointer;transition:background .3s;';
+    dot.onclick = () => goTo(i);
+    dots.appendChild(dot);
+
+    // Thumb
+    const th = document.createElement('div');
+    th.style.cssText = 'height:60px;cursor:pointer;border:1px solid transparent;overflow:hidden;transition:border-color .3s,opacity .3s;opacity:.5;';
+    th.innerHTML = `<img src="${s.src}" alt="" style="width:100%;height:100%;object-fit:cover;">`;
+    th.onclick = () => goTo(i);
+    thumbs.appendChild(th);
+  });
+
+  function goTo(n) {
+    const slideEls = track.children;
+    const dotEls   = dots.children;
+    const thumbEls = thumbs.children;
+
+    slideEls[current].style.opacity = '0';
+    slideEls[current].style.zIndex  = '1';
+    dotEls[current].style.background = '#494847';
+    thumbEls[current].style.borderColor = 'transparent';
+    thumbEls[current].style.opacity = '.5';
+
+    current = (n + slides.length) % slides.length;
+
+    slideEls[current].style.opacity = '1';
+    slideEls[current].style.zIndex  = '2';
+    dotEls[current].style.background = '#c19cff';
+    thumbEls[current].style.borderColor = 'rgba(193,156,255,.5)';
+    thumbEls[current].style.opacity = '1';
+
+    label.textContent   = slides[current].label;
+    caption.textContent = slides[current].caption;
+    counter.textContent = String(current + 1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+
+    resetTimer();
+  }
+
+  function resetTimer() {
+    clearInterval(timer);
+    timer = setInterval(() => goTo(current + 1), 4500);
+  }
+
+  window.carouselMove = function(dir) { goTo(current + dir); };
+
+  // Keyboard support
+  document.addEventListener('keydown', e => {
+    const sec = document.getElementById('carousel-section');
+    const rect = sec.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      if (e.key === 'ArrowLeft')  goTo(current - 1);
+      if (e.key === 'ArrowRight') goTo(current + 1);
+    }
+  });
+
+  // Arrow hover styles
+  ['carousel-prev','carousel-next'].forEach(id => {
+    const btn = document.getElementById(id);
+    btn.addEventListener('mouseenter', () => { btn.style.background='rgba(193,156,255,.12)'; btn.style.borderColor='rgba(193,156,255,.6)'; });
+    btn.addEventListener('mouseleave', () => { btn.style.background='rgba(0,0,0,.7)'; btn.style.borderColor='rgba(193,156,255,.25)'; });
+  });
+
+  goTo(0);
+})();
+</script>
 
 <!-- ═══════════════════════════════════════
   ACADEMIC INIT
@@ -1036,6 +1195,9 @@ const T = {
     nextjs_sub:  "Dominio Frontend",
     react_sub:   "Full Stack",
 
+    community_title: "COMMUNITY_LOG",
+    community_sub:  "Eventos · Charlas · Mentoring · Comunidad",
+
     cuyo_badge:    "CO-FUNDADOR",
     cuyo_tagline:  "Comunidad de builders en IA, tecnología y web3",
     cuyo_desc1:    "CuyoConnect es la comunidad de builders en IA, tecnología y encuentros presenciales del ecosistema Cuyo. Conectamos talento local con oportunidades globales descentralizadas a través de educación, networking y soporte técnico.",
@@ -1149,6 +1311,9 @@ const T = {
     english_sub: "Intermediate-Advanced",
     nextjs_sub:  "Frontend Mastery",
     react_sub:   "Full Stack",
+
+    community_title: "COMMUNITY_LOG",
+    community_sub:  "Events · Talks · Mentoring · Community",
 
     cuyo_badge:    "CO-FOUNDER",
     cuyo_tagline:  "Community of builders in AI, technology and web3",
@@ -1498,7 +1663,7 @@ const PROJECTS = [
     tag:'web3', title:'CuyoConnect',
     desc:{ es:'Plataforma comunitaria Web3 para desarrolladores de Latinoamérica. Hub de eventos, hackathons, recursos y networking para el ecosistema blockchain regional.', en:'Web3 community platform for Latin American developers. Hub for events, hackathons, resources and networking for the regional blockchain ecosystem.' },
     stack:['Next.js','TypeScript','React'],
-    url:'https://cuyoconnect-site.vercel.app/', color:'#9146ff'
+    url:'https://cuyoconnect.com/', color:'#9146ff'
   },
   /* ── WEB2 ── */
   {
