@@ -151,6 +151,9 @@
     section { padding-left:1rem !important; padding-right:1rem !important; }
     .hero-photo-wrap { height:340px !important; }
     .hero-photo-wrap img { object-position:50% 30% !important; }
+    .hero-badge { display:none !important; }
+    .hero-photo-section { padding-bottom:0 !important; flex-direction:column; }
+    .hero-terminal { position:relative !important; bottom:auto !important; left:0 !important; right:0 !important; margin-top:16px; }
     #hero-btns { flex-wrap:nowrap !important; gap:8px !important; }
     #hero-btns .btn-primary,
     #hero-btns .btn-ghost { padding:9px 12px !important; font-size:10px !important; letter-spacing:.06em !important; }
@@ -361,7 +364,7 @@
     </div>
 
     <!-- RIGHT: Large photo + Terminal overlay -->
-    <div class="relative reveal-right flex items-start" style="transition-delay:.2s;padding-bottom:110px;">
+    <div class="hero-photo-section relative reveal-right flex items-start" style="transition-delay:.2s;padding-bottom:110px;">
 
       <!-- Photo (clips only the image) -->
       <div class="hero-photo-wrap relative w-full overflow-hidden" style="height:660px;border:1px solid rgba(193,156,255,.18);">
@@ -372,7 +375,7 @@
         <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08) 45%,rgba(0,0,0,.7) 100%);pointer-events:none;"></div>
         <div style="position:absolute;inset:0;background:linear-gradient(to right,rgba(75,0,130,.18),transparent 55%);pointer-events:none;"></div>
         <!-- User badge top-left -->
-        <div style="position:absolute;top:20px;left:20px;" class="font-label text-xs">
+        <div style="position:absolute;top:20px;left:20px;" class="hero-badge font-label text-xs">
           <div style="background:rgba(0,0,0,.72);border:1px solid rgba(193,156,255,.22);padding:10px 14px;backdrop-filter:blur(10px);">
             <p style="color:#9cff93;" class="mb-1">▶ USER_IDENTIFIED</p>
             <p style="color:#adaaaa;" class="mb-1">hh.mauri2190@gmail.com</p>
@@ -382,7 +385,7 @@
       </div>
 
       <!-- Terminal — outside the photo, shifted right, overlapping bottom -->
-      <div style="position:absolute;bottom:0;left:18%;right:-12px;z-index:20;">
+      <div class="hero-terminal" style="position:absolute;bottom:0;left:18%;right:-12px;z-index:20;">
         <div class="terminal-glow border border-outline-variant/20 overflow-hidden" style="background:rgba(8,8,8,.96);backdrop-filter:blur(16px);box-shadow:0 8px 40px rgba(0,0,0,.7);">
           <div class="term-header" style="background:rgba(26,26,26,.98);">
             <div class="flex gap-1.5"><div class="term-dot"></div><div class="term-dot"></div><div class="term-dot"></div></div>
