@@ -149,6 +149,12 @@
     body { padding-bottom:68px; }
     .sec-title { font-size:1.25rem; }
     section { padding-left:1rem !important; padding-right:1rem !important; }
+    .hero-photo-wrap { height:340px !important; }
+    .hero-photo-wrap img { object-position:50% 30% !important; }
+    #hero-btns { flex-wrap:nowrap !important; gap:8px !important; }
+    #hero-btns .btn-primary,
+    #hero-btns .btn-ghost { padding:9px 12px !important; font-size:10px !important; letter-spacing:.06em !important; }
+    #hero-btns .btn-whatsapp { padding:9px 10px !important; font-size:10px !important; letter-spacing:.06em !important; }
   }
 
   .tech-card { position: relative; overflow: hidden; }
@@ -327,7 +333,7 @@
       <p class="font-body text-secondary text-lg max-w-xl mb-10 leading-relaxed reveal" style="transition-delay:.3s" data-i18n-html="hero_desc">
         Arquitecto full-stack especializado en el ecosistema <span style="color:#9cff93;" class="font-label">Web3</span>. Construyendo sistemas descentralizados seguros y de alto rendimiento con foco en <span style="color:var(--primary);" class="font-label">Rust</span> y <span style="color:var(--primary);" class="font-label">Stellar</span>.
       </p>
-      <div class="flex flex-wrap gap-4 reveal" style="transition-delay:.4s">
+      <div id="hero-btns" class="flex flex-wrap gap-4 reveal" style="transition-delay:.4s">
         <button class="btn-primary" data-i18n="hero_btn_archive" onclick="openArchive()">VER_ARCHIVO</button>
         <button class="btn-ghost" data-i18n="hero_btn_cv" onclick="triggerCVDownload()">CURRICULUM.PDF</button>
         <a class="btn-whatsapp" href="https://wa.me/542612572860" target="_blank" rel="noopener" data-i18n="hero_btn_whatsapp">
@@ -358,7 +364,7 @@
     <div class="relative reveal-right flex items-start" style="transition-delay:.2s;padding-bottom:110px;">
 
       <!-- Photo (clips only the image) -->
-      <div class="relative w-full overflow-hidden" style="height:660px;border:1px solid rgba(193,156,255,.18);">
+      <div class="hero-photo-wrap relative w-full overflow-hidden" style="height:660px;border:1px solid rgba(193,156,255,.18);">
         <img src="desing/img/mauricioFotoPerfil.jpg"
              alt="Mauricio Medina"
              style="width:100%;height:100%;object-fit:cover;object-position:50% 18%;filter:grayscale(5%) contrast(1.05) brightness(.95);">
