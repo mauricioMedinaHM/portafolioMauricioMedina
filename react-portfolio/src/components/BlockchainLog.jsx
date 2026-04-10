@@ -26,7 +26,7 @@ export default function BlockchainLog() {
           >
             <div className="flex justify-between items-start mb-6">
               <div className="flex items-center gap-3">
-                <img src="/img/LottyLogoDashboard.png" alt="Lotty" className="h-10 w-auto object-contain flex-shrink-0" style={{ maxWidth: 80 }} />
+                <img src="/img/LottyLogoDashboard.webp" alt="Lotty" className="h-10 w-auto object-contain flex-shrink-0" style={{ maxWidth: 80 }} />
                 <div>
                   <h3 className="font-headline text-2xl font-bold text-primary">Lotty</h3>
                   <p className="font-label text-xs text-tertiary uppercase mt-1">{t.lotty_role}</p>

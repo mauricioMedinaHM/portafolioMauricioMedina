@@ -21,7 +21,7 @@ export default function CuyoConnect() {
                 ◈ {t.cuyo_badge}
               </div>
               <div className="flex items-center gap-4 mb-4">
-                <img src="/img/logoCuyoConnect.png" alt="CuyoConnect" style={{ width: 48, height: 48, objectFit: 'contain', filter: 'brightness(1.1)' }} />
+                <img src="/img/logoCuyoConnect.webp" alt="CuyoConnect" style={{ width: 48, height: 48, objectFit: 'contain', filter: 'brightness(1.1)' }} />
                 <h2 className="font-headline text-4xl md:text-5xl font-bold text-on-surface uppercase">CuyoConnect</h2>
               </div>
               <p className="font-label text-xs text-primary uppercase tracking-widest mb-6">{t.cuyo_tagline}</p>

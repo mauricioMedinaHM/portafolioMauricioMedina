@@ -118,7 +118,7 @@ export default function Hero({ onOpenArchive, onOpenCv }) {
           {/* Photo */}
           <div className="hero-photo-wrap relative w-full overflow-hidden" style={{ height: 660, border: '1px solid rgba(193,156,255,.18)' }}>
             <img
-              src="/img/mauricioFotoPerfil.jpg"
+              src="/img/mauricioFotoPerfil.webp"
               alt="Mauricio Medina"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 18%', filter: 'grayscale(5%) contrast(1.05) brightness(.95)' }}
             />
