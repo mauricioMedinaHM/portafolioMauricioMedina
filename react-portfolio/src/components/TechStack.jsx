@@ -14,10 +14,8 @@ const ITEMS = [
   { src: `${DI}/docker/docker-original.svg`,           label: 'Docker' },
   { src: `${SI}/stellar/c19cff`,                       label: 'Soroban' },
   { src: `${DI}/linux/linux-original.svg`,             label: 'Linux' },
-  { src: `${DI}/wasm/wasm-original.svg`,               label: 'WebAssembly' },
   { src: `${DI}/tailwindcss/tailwindcss-original.svg`, label: 'Tailwind' },
   { src: `${SI}/vercel/ffffff`,                        label: 'Vercel' },
-  { src: `${SI}/amazonaws/ff9900`,                     label: 'AWS' },
   { src: `${DI}/git/git-original.svg`,                 label: 'Git' },
   { src: `${DI}/wordpress/wordpress-plain.svg`,        label: 'WordPress' },
 ]

@@ -140,10 +140,10 @@ export default function Navigation({ onOpenCv }) {
             {[
               { href: '#about', label: t.nav_about, icon: 'person' },
               { href: '#projects', label: t.nav_projects, icon: 'folder' },
-              { href: '#experience', label: 'cd /blockchain', icon: 'grid' },
+              { href: '#experience', label: 'Blockchain', icon: 'grid' },
               { href: '#stack', label: t.nav_stack, icon: 'list' },
               { href: '#cuyoconnect', label: t.nav_cuyo, icon: 'people' },
-              { href: '#contact', label: 'cd /contact', icon: 'mail' },
+              { href: '#contact', label: 'Contacto', icon: 'mail' },
             ].map(item => (
               <a
                 key={item.href}
