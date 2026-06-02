@@ -1,9 +1,52 @@
 import { motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
-import { revealVariants, revealLeftVariants, revealRightVariants, viewportOnce } from '../hooks/useScrollReveal'
+import { revealVariants, staggerContainer, staggerItem, viewportOnce } from '../hooks/useScrollReveal'
 
 export default function Projects() {
   const { t } = useLang()
+
+  const projects = [
+    {
+      name: 'Apuntes UDA',
+      logo: '/img/logoApuntesUDA.webp',
+      labelKey: 'proj_own',
+      descKey: 'uda_desc',
+      url: 'https://www.apuntesuda.com/',
+      accent: '#c19cff',
+    },
+    {
+      name: 'Guía IT Mendoza',
+      logo: '/img/logoGuiaITMendoza-LOGO.webp',
+      labelKey: 'proj_own',
+      descKey: 'guia_desc',
+      url: 'https://guia-it-mendoza.vercel.app/',
+      accent: '#d8b4fe',
+    },
+    {
+      name: 'Patitas a Casa',
+      logo: '/img/logoPatitasAcasa.webp',
+      labelKey: 'proj_own',
+      descKey: 'patitas_proj_desc',
+      url: 'https://patitas-a-casa-kappa.vercel.app/',
+      accent: '#9146ff',
+    },
+    {
+      name: 'Manzano Histórico',
+      logo: 'https://manzanohistoricoexcursions.com/wp-content/uploads/2024/05/cropped-logo-1.webp',
+      labelKey: 'proj_client',
+      descKey: 'manzano_desc',
+      url: 'https://manzanohistoricoexcursions.com/',
+      accent: '#c19cff',
+    },
+    {
+      name: 'Empoderate',
+      logo: 'https://empoderate.com.ar/wp-content/uploads/2025/12/EmpoderateA3_20251220_180405_0000.webp',
+      labelKey: 'proj_client',
+      descKey: 'empo_desc',
+      url: 'https://empoderate.com.ar/',
+      accent: '#c19cff',
+    },
+  ]
 
   return (
     <section id="projects" className="py-24 px-6 md:px-12 lg:px-24" style={{ background: '#000' }}>
@@ -16,124 +59,51 @@ export default function Projects() {
           <div className="divider" />
         </motion.div>
 
-        {/* Featured row */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Apuntes UDA */}
-          <motion.div
-            variants={revealLeftVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-            transition={{ delay: 0.1 }}
-            className="lg:col-span-2 card-hover border border-primary/20 p-8"
-            style={{ background: '#131313' }}
-          >
-            <div className="flex items-start justify-between gap-4 mb-5">
-              <div className="flex items-center gap-4">
-                <img src="/img/logoApuntesUDA.webp" alt="Apuntes UDA" className="h-12 w-auto object-contain flex-shrink-0" style={{ maxWidth: 60 }} />
-                <div>
-                  <span className="font-label text-xs text-primary uppercase tracking-widest mb-1 block">{t.proj_own}</span>
-                  <h3 className="font-headline text-2xl font-bold text-on-surface">Apuntes UDA</h3>
-                </div>
+        <motion.div
+          variants={staggerContainer} initial="hidden" whileInView="visible" viewport={viewportOnce}
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          {projects.map((p) => (
+            <motion.a
+              key={p.name}
+              variants={staggerItem}
+              href={p.url}
+              target="_blank"
+              rel="noreferrer"
+              className="card-hover p-6 border-l-2 flex flex-col group"
+              style={{ background: '#131313', borderLeftColor: p.accent, textDecoration: 'none' }}
+            >
+              {/* Logo */}
+              <div className="h-14 flex items-center mb-5">
+                <img
+                  src={p.logo}
+                  alt={p.name}
+                  className="h-full w-auto object-contain"
+                  style={{ maxWidth: 140 }}
+                />
               </div>
-              <a href="https://www.apuntesuda.com/" target="_blank" rel="noreferrer" className="flex-shrink-0 font-label text-xs text-primary hover:text-tertiary transition-colors border border-primary/30 px-3 py-1.5">{t.proj_visit}</a>
-            </div>
-            <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-6">{t.uda_desc}</p>
-            <div className="flex flex-wrap gap-2">
-              {[['react', 'c19cff', 'React'], ['nextdotjs', 'ffffff', 'Next.js'], ['typescript', 'ffffff', 'TypeScript'], ['vercel', 'ffffff', 'Vercel']].map(([icon, color, label]) => (
-                <span key={label} className="tech-badge flex items-center gap-1.5">
-                  <img src={`https://cdn.simpleicons.org/${icon}/${color}`} className="w-3.5 h-3.5" alt="" />
-                  {label}
-                </span>
-              ))}
-            </div>
-          </motion.div>
 
-          {/* Guía IT Mendoza */}
-          <motion.div
-            variants={revealRightVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-            transition={{ delay: 0.15 }}
-            className="card-hover border border-tertiary/20 p-8"
-            style={{ background: '#131313' }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <img src="/img/logoGuiaITMendoza-LOGO.webp" alt="Guía IT Mendoza" className="h-10 w-auto object-contain flex-shrink-0" style={{ maxWidth: 50 }} />
-              <div>
-                <span className="font-label text-xs text-tertiary uppercase tracking-widest block mb-0.5">{t.proj_own}</span>
-                <h3 className="font-headline text-lg font-bold text-on-surface">Guía IT Mendoza</h3>
-              </div>
-            </div>
-            <p className="font-body text-sm text-on-surface-variant leading-relaxed mb-5">{t.guia_desc}</p>
-            <div className="flex flex-wrap gap-2 mb-5">
-              {[['react', '9cff93', 'React'], ['vercel', 'ffffff', 'Vercel']].map(([icon, color, label]) => (
-                <span key={label} className="tech-badge flex items-center gap-1.5">
-                  <img src={`https://cdn.simpleicons.org/${icon}/${color}`} className="w-3.5 h-3.5" alt="" />
-                  {label}
-                </span>
-              ))}
-            </div>
-            <a href="https://guia-it-mendoza.vercel.app/" target="_blank" rel="noreferrer" className="font-label text-xs text-tertiary hover:text-primary transition-colors">{t.proj_visit}</a>
-          </motion.div>
-        </div>
+              {/* Meta */}
+              <p className="font-label text-xs uppercase tracking-widest mb-1" style={{ color: p.accent }}>
+                {t[p.labelKey]}
+              </p>
+              <h3 className="font-headline text-lg font-bold text-on-surface mb-3">{p.name}</h3>
 
-        {/* Secondary row */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Manzano */}
-          <motion.div
-            variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-            transition={{ delay: 0.2 }}
-            className="card-hover border border-outline-variant/10 p-6"
-            style={{ background: '#131313' }}
-          >
-            <img src="https://manzanohistoricoexcursions.com/wp-content/uploads/2024/05/cropped-logo-1.webp" alt="Manzano Histórico" className="h-10 w-auto object-contain mb-4" style={{ maxWidth: 130 }} />
-            <p className="font-body text-xs text-on-surface-variant leading-relaxed mb-4">{t.manzano_desc}</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              <span className="tech-badge flex items-center gap-1.5">
-                <img src="https://cdn.simpleicons.org/wordpress/c19cff" className="w-3.5 h-3.5" alt="" />WordPress
-              </span>
-            </div>
-            <a href="https://manzanohistoricoexcursions.com/" target="_blank" rel="noreferrer" className="font-label text-xs text-primary hover:text-tertiary transition-colors">{t.proj_visit}</a>
-          </motion.div>
+              {/* Description */}
+              <p className="font-body text-xs text-on-surface-variant leading-relaxed flex-1">
+                {t[p.descKey]}
+              </p>
 
-          {/* Empoderate */}
-          <motion.div
-            variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-            transition={{ delay: 0.25 }}
-            className="card-hover border border-outline-variant/10 p-6"
-            style={{ background: '#131313' }}
-          >
-            <div className="h-10 flex items-center mb-4">
-              <img src="https://empoderate.com.ar/wp-content/uploads/2025/12/EmpoderateA3_20251220_180405_0000.webp" alt="Empoderate" className="h-9 w-auto object-contain" style={{ maxWidth: 130 }} />
-            </div>
-            <p className="font-body text-xs text-on-surface-variant leading-relaxed mb-4">{t.empo_desc}</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              <span className="tech-badge flex items-center gap-1.5">
-                <img src="https://cdn.simpleicons.org/wordpress/c19cff" className="w-3.5 h-3.5" alt="" />WordPress
-              </span>
-            </div>
-            <a href="https://empoderate.com.ar/" target="_blank" rel="noreferrer" className="font-label text-xs text-primary hover:text-tertiary transition-colors">{t.proj_visit}</a>
-          </motion.div>
-
-          {/* Patitas */}
-          <motion.div
-            variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-            transition={{ delay: 0.3 }}
-            className="card-hover border border-outline-variant/10 p-6"
-            style={{ background: '#131313' }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <img src="/img/logoPatitasAcasa.webp" alt="Patitas a Casa" className="h-10 w-auto object-contain flex-shrink-0" style={{ maxWidth: 50 }} />
-              <h3 className="font-headline text-lg font-bold text-on-surface">Patitas a Casa</h3>
-            </div>
-            <p className="font-body text-xs text-on-surface-variant leading-relaxed mb-4">{t.patitas_proj_desc}</p>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {[['react', '9cff93', 'React'], ['nodedotjs', '9cff93', 'Node.js'], ['postgresql', '9cff93', 'PostgreSQL']].map(([icon, color, label]) => (
-                <span key={label} className="tech-badge flex items-center gap-1.5">
-                  <img src={`https://cdn.simpleicons.org/${icon}/${color}`} className="w-3.5 h-3.5" alt="" />
-                  {label}
-                </span>
-              ))}
-            </div>
-            <a href="https://patitas-a-casa-kappa.vercel.app/" target="_blank" rel="noreferrer" className="font-label text-xs text-tertiary hover:text-primary transition-colors">{t.proj_visit}</a>
-          </motion.div>
-        </div>
+              {/* Link */}
+              <p
+                className="font-label text-xs mt-5 transition-opacity"
+                style={{ color: p.accent, opacity: 0.6 }}
+              >
+                {t.proj_visit}
+              </p>
+            </motion.a>
+          ))}
+        </motion.div>
       </div>
     </section>
   )

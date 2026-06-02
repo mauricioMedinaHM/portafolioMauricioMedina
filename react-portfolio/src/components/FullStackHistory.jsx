@@ -1,6 +1,6 @@
 import { motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
-import { revealVariants, revealLeftVariants, revealRightVariants, viewportOnce } from '../hooks/useScrollReveal'
+import { revealLeftVariants, revealVariants, revealRightVariants, viewportOnce } from '../hooks/useScrollReveal'
 
 export default function FullStackHistory() {
   const { t } = useLang()
@@ -16,83 +16,105 @@ export default function FullStackHistory() {
           <div className="divider" />
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* ALQ Agency */}
           <motion.div
             variants={revealLeftVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
             transition={{ delay: 0.1 }}
-            className="lg:col-span-2"
+            className="card-hover p-6 border-l-2 border-primary flex flex-col"
+            style={{ background: '#131313' }}
           >
-            <div className="card-hover h-full border border-outline-variant/10 p-10 relative overflow-hidden group" style={{ background: '#131313' }}>
-              <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-20 transition-opacity duration-500">
-                <svg className="w-20 h-20 text-primary" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z" />
-                </svg>
+            <div className="flex justify-between items-start mb-5">
+              <div>
+                <h3 className="font-headline text-lg font-bold text-on-surface">ALQ Agency</h3>
+                <p className="font-label text-xs text-primary uppercase mt-0.5 tracking-widest">{t.alq_role}</p>
               </div>
-              <h3 className="font-headline text-3xl font-bold text-on-surface mb-2">ALQ Agency</h3>
-              <p className="font-label text-xs text-primary uppercase tracking-widest mb-6">{t.alq_role}</p>
-              <p className="text-secondary font-body mb-8 max-w-lg leading-relaxed">{t.alq_desc}</p>
-              <div className="flex gap-4 flex-wrap">
-                {['[ REACT_NEXT ]', '[ NODE_EXPRESS ]', '[ POSTGRES ]', '[ SYSADMIN ]'].map(s => (
-                  <span key={s} className="font-label text-xs text-outline">{s}</span>
-                ))}
-              </div>
+            </div>
+            <p className="text-on-surface-variant font-body text-xs leading-relaxed flex-1">{t.alq_desc}</p>
+            <div className="mt-5 flex gap-1.5 flex-wrap">
+              {['React', 'Next.js', 'Node', 'PostgreSQL', 'SysAdmin'].map(s => (
+                <span key={s} className="tech-badge">{s}</span>
+              ))}
             </div>
           </motion.div>
 
           {/* Patitas a Casa */}
           <motion.div
             variants={revealRightVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.15 }}
+            className="card-hover p-6 border-l-2 border-tertiary flex flex-col"
+            style={{ background: '#131313' }}
           >
-            <div className="card-hover h-full border border-primary/20 p-8 flex flex-col" style={{ background: '#1a1919' }}>
-              <h3 className="font-headline text-2xl font-bold text-on-surface mb-2">Patitas a Casa</h3>
-              <p className="font-label text-xs text-tertiary uppercase mb-2">{t.patitas_role}</p>
-              <p className="text-on-surface-variant font-body text-sm leading-relaxed mb-6">{t.patitas_desc}</p>
-              <div className="mt-auto border border-outline-variant/20 overflow-hidden" style={{ background: '#0e0e0e' }}>
-                <div className="p-2 flex gap-1" style={{ background: '#201f1f' }}>
-                  {[1, 2, 3].map(i => <div key={i} style={{ width: 6, height: 6, background: '#494847', borderRadius: '50%' }} />)}
-                </div>
-                <div className="p-4">
-                  <div className="font-label text-xs text-tertiary mb-2">$ ls patitas-a-casa/</div>
-                  <div className="font-label text-xs text-on-surface-variant space-y-1">
-                    <div><span className="text-primary">drwxr</span> frontend/</div>
-                    <div><span className="text-primary">drwxr</span> backend/</div>
-                    <div><span className="text-primary">-rw-r</span> docker-compose.yml</div>
-                  </div>
-                  <div className="font-label text-xs mt-3"><span className="text-tertiary">$</span> <span className="text-on-surface-variant">vercel deploy --prod</span></div>
-                  <div className="font-label text-xs text-tertiary mt-1">✓ patitas-a-casa.vercel.app</div>
-                </div>
+            <div className="flex justify-between items-start mb-5">
+              <div>
+                <h3 className="font-headline text-lg font-bold text-on-surface">Patitas a Casa</h3>
+                <p className="font-label text-xs text-tertiary uppercase mt-0.5 tracking-widest">{t.patitas_role}</p>
               </div>
+            </div>
+            <p className="text-on-surface-variant font-body text-xs leading-relaxed flex-1">{t.patitas_desc}</p>
+            <div className="mt-5 flex gap-1.5 flex-wrap">
+              {['React', 'Node.js', 'PostgreSQL', 'Docker'].map(s => (
+                <span key={s} className="tech-badge">{s}</span>
+              ))}
             </div>
           </motion.div>
 
           {/* Freelance */}
           <motion.div
-            variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-            transition={{ delay: 0.3 }}
-            className="lg:col-span-3"
+            variants={revealLeftVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
+            transition={{ delay: 0.2 }}
+            className="card-hover p-6 border-l-2 flex flex-col"
+            style={{ background: '#131313', borderLeftColor: '#c19cff' }}
           >
-            <div className="card-hover border border-outline-variant/10 p-8 flex flex-col md:flex-row gap-6 items-start" style={{ background: '#131313' }}>
-              <div className="flex-shrink-0">
-                <div className="w-12 h-12 flex items-center justify-center border border-primary/30" style={{ background: 'rgba(193,156,255,.08)' }}>
-                  <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <path strokeLinecap="square" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
+            <div className="flex justify-between items-start mb-5">
+              <div>
+                <h3 className="font-headline text-lg font-bold text-on-surface">{t.freelance_title}</h3>
+                <p className="font-label text-xs uppercase mt-0.5 tracking-widest" style={{ color: '#9146ff' }}>2025 – Present</p>
+              </div>
+            </div>
+            <p className="text-on-surface-variant font-body text-xs leading-relaxed flex-1">{t.freelance_desc}</p>
+            <div className="mt-5 flex gap-1.5 flex-wrap">
+              {['Full-Stack', 'Web3', 'Rust'].map(s => (
+                <span key={s} className="tech-badge">{s}</span>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Puna Tech */}
+          <motion.div
+            variants={revealRightVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
+            transition={{ delay: 0.25 }}
+            className="card-hover p-6 border-l-2 border-tertiary flex flex-col"
+            style={{ background: '#131313' }}
+          >
+            <div className="flex justify-between items-start mb-5">
+              <div className="flex items-center gap-3">
+                <PunaTechIcon />
+                <div>
+                  <h3 className="font-headline text-lg font-bold text-on-surface">Puna Tech 2026</h3>
+                  <p className="font-label text-xs text-tertiary uppercase mt-0.5 tracking-widest">{t.punatech_role}</p>
                 </div>
               </div>
-              <div className="flex-1">
-                <h3 className="font-headline text-xl font-bold text-on-surface mb-1">{t.freelance_title}</h3>
-                <p className="font-label text-xs text-primary uppercase tracking-widest mb-3">2025 – Present</p>
-                <p className="text-on-surface-variant font-body text-sm leading-relaxed">{t.freelance_desc}</p>
-              </div>
-              <div className="flex gap-2 flex-wrap md:flex-col">
-                {['FULL-STACK', 'WEB3', 'RUST'].map(s => <span key={s} className="tech-badge">{s}</span>)}
-              </div>
+            </div>
+            <p className="text-on-surface-variant font-body text-xs leading-relaxed flex-1">{t.punatech_desc}</p>
+            <div className="mt-5 flex gap-1.5 flex-wrap">
+              {['AI', 'Speaker', 'Mentor', 'Hackathon'].map(s => (
+                <span key={s} className="tech-badge">{s}</span>
+              ))}
             </div>
           </motion.div>
         </div>
       </div>
     </section>
+  )
+}
+
+function PunaTechIcon() {
+  return (
+    <div style={{ width: 32, height: 32, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(216,180,254,.1)', border: '1px solid rgba(216,180,254,.2)' }}>
+      <svg width="16" height="16" fill="none" stroke="var(--tertiary)" strokeWidth="1.8" viewBox="0 0 24 24">
+        <path strokeLinecap="square" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M9 4a3 3 0 016 0v7a3 3 0 01-6 0V4z" />
+      </svg>
+    </div>
   )
 }

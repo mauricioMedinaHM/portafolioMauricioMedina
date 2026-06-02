@@ -49,13 +49,13 @@ export default function Navigation({ onOpenCv }) {
         {/* Brand */}
         <div className="flex items-center gap-2.5">
           <div className="font-label font-bold text-primary text-sm tracking-widest hidden md:block">
-            <span style={{ color: '#9cff93' }}>ROOT</span>@
+            <span style={{ color: 'var(--tertiary)' }}>ROOT</span>@
             <span style={{ color: '#adaaaa' }}>MauricioMedinaDev</span>:
             <span style={{ color: 'var(--primary)' }}>~</span>&nbsp;
             <span className="cursor-blink" style={{ height: '.8em', width: 7 }} />
           </div>
           <span className="font-label font-bold text-sm tracking-widest md:hidden" style={{ color: '#c19cff' }}>
-            Mauricio<span style={{ color: '#9cff93' }}>_dev</span>
+            Mauricio<span style={{ color: 'var(--tertiary)' }}>_dev</span>
           </span>
         </div>
 
@@ -75,18 +75,6 @@ export default function Navigation({ onOpenCv }) {
         <div className="flex items-center gap-2 md:gap-3">
           {/* Social icons — desktop */}
           <div className="hidden sm:flex gap-3 mr-2 items-center">
-            <SocialIcon
-              href="https://x.com/mauriHm_"
-              src="https://cdn.simpleicons.org/x/777575"
-              hoverSrc="https://cdn.simpleicons.org/x/c19cff"
-              alt="X"
-            />
-            <SocialIcon
-              href="https://github.com/mauricioMedinaHM"
-              src="https://cdn.simpleicons.org/github/777575"
-              hoverSrc="https://cdn.simpleicons.org/github/c19cff"
-              alt="GitHub"
-            />
             <a href="https://www.linkedin.com/in/mauricio-medina-dev/" target="_blank" rel="noreferrer">
               <LinkedInIcon />
             </a>
@@ -96,9 +84,12 @@ export default function Navigation({ onOpenCv }) {
               hoverSrc="https://cdn.simpleicons.org/instagram/c19cff"
               alt="Instagram"
             />
-            <a href="mailto:hh.mauri2190@gmail.com">
-              <EmailIcon />
-            </a>
+            <SocialIcon
+              href="https://x.com/mauriHm_"
+              src="https://cdn.simpleicons.org/x/777575"
+              hoverSrc="https://cdn.simpleicons.org/x/c19cff"
+              alt="X"
+            />
           </div>
 
           {/* Lang toggle */}
@@ -141,7 +132,7 @@ export default function Navigation({ onOpenCv }) {
           <div style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(73,72,71,.25)' }}>
             <div className="flex items-center gap-2">
               <img src="https://cdn.simpleicons.org/linux/c19cff" className="w-6 h-6" alt="Linux" />
-              <span className="font-label text-sm font-bold" style={{ color: '#c19cff' }}>Mauricio<span style={{ color: '#9cff93' }}>_dev</span></span>
+              <span className="font-label text-sm font-bold" style={{ color: '#c19cff' }}>Mauricio<span style={{ color: 'var(--tertiary)' }}>_dev</span></span>
             </div>
             <button onClick={closeMob} style={{ background: 'none', border: 'none', color: '#494847', fontSize: 20, cursor: 'pointer' }}>✕</button>
           </div>
@@ -169,11 +160,9 @@ export default function Navigation({ onOpenCv }) {
           <div style={{ padding: 20, borderTop: '1px solid rgba(73,72,71,.25)', display: 'flex', flexDirection: 'column', gap: 12 }}>
             <button className="btn-primary w-full" style={{ textAlign: 'center' }} onClick={() => { onOpenCv(); closeMob() }}>{t.nav_cv}</button>
             <div style={{ display: 'flex', gap: 16, justifyContent: 'center', paddingTop: 8 }}>
-              <SocialIcon href="https://x.com/mauriHm_" src="https://cdn.simpleicons.org/x/777575" hoverSrc="https://cdn.simpleicons.org/x/c19cff" alt="X" size={20} />
-              <SocialIcon href="https://github.com/mauricioMedinaHM" src="https://cdn.simpleicons.org/github/777575" hoverSrc="https://cdn.simpleicons.org/github/c19cff" alt="GitHub" size={20} />
               <a href="https://www.linkedin.com/in/mauricio-medina-dev/" target="_blank" rel="noreferrer"><LinkedInIcon size={20} /></a>
               <SocialIcon href="https://www.instagram.com/mauri.h.m/" src="https://cdn.simpleicons.org/instagram/777575" hoverSrc="https://cdn.simpleicons.org/instagram/c19cff" alt="Instagram" size={20} />
-              <a href="mailto:hh.mauri2190@gmail.com"><EmailIcon size={20} /></a>
+              <SocialIcon href="https://x.com/mauriHm_" src="https://cdn.simpleicons.org/x/777575" hoverSrc="https://cdn.simpleicons.org/x/c19cff" alt="X" size={20} />
             </div>
           </div>
         </div>
@@ -212,19 +201,6 @@ function LinkedInIcon({ size = 16 }) {
   )
 }
 
-function EmailIcon({ size = 16 }) {
-  const [hover, setHover] = useState(false)
-  return (
-    <svg
-      style={{ width: size, height: size, color: hover ? '#c19cff' : '#777575', transition: 'color .2s' }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"
-    >
-      <path strokeLinecap="square" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-    </svg>
-  )
-}
 
 function NavMobileIcon({ type }) {
   const style = { width: 16, height: 16, flexShrink: 0, color: '#9146ff' }

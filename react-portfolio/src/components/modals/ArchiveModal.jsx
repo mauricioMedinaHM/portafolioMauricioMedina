@@ -23,9 +23,9 @@ export default function ArchiveModal({ open, onClose }) {
       >
         <motion.div
           key="archive-panel"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, scale: 0.96, y: 12 }}
+          animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 0.28, ease: [0.23, 1, 0.32, 1] } }}
+          exit={{ opacity: 0, scale: 0.97, y: 8, transition: { duration: 0.18, ease: [0.77, 0, 0.175, 1] } }}
           style={{ width: 'min(960px,96vw)', background: '#0e0e0e', border: '1px solid rgba(193,156,255,.2)', boxShadow: '0 0 80px rgba(145,70,255,.1)' }}
         >
           {/* Header */}

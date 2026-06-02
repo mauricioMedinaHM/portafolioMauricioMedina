@@ -19,7 +19,7 @@ export default function Typewriter({ clockRef }) {
 
     const cursorEl = document.createElement('span')
     cursorEl.className = 'cursor-blink'
-    cursorEl.style.cssText = 'display:inline-block;width:10px;height:1em;background:#9cff93;vertical-align:text-bottom;'
+    cursorEl.style.cssText = 'display:inline-block;width:10px;height:1em;background:var(--tertiary);vertical-align:text-bottom;'
 
     function mkRow() {
       const d = document.createElement('div')
@@ -32,7 +32,7 @@ export default function Typewriter({ clockRef }) {
       if (lineIdx >= seq.length) {
         const d = mkRow()
         const s = document.createElement('span')
-        s.style.color = '#9cff93'
+        s.style.color = 'var(--tertiary)'
         s.textContent = '$'
         d.appendChild(s)
         d.appendChild(cursorEl)
@@ -48,7 +48,7 @@ export default function Typewriter({ clockRef }) {
       const row = mkRow()
       if (item.type === 'cmd') {
         const dollar = document.createElement('span')
-        dollar.style.color = '#9cff93'
+        dollar.style.color = 'var(--tertiary)'
         dollar.textContent = '$'
         row.appendChild(dollar)
         const txt = document.createElement('span')

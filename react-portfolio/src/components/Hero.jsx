@@ -4,16 +4,18 @@ import { useLang } from '../context/LanguageContext'
 import MatrixRain from './MatrixRain'
 import Typewriter from './Typewriter'
 
+const EASE_OUT = [0.23, 1, 0.32, 1]
+
 const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 28 },
+  initial: { opacity: 0, y: 20 },
   animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.7, ease: 'easeOut', delay },
+  transition: { duration: 0.5, ease: EASE_OUT, delay },
 })
 
 const fadeRight = (delay = 0) => ({
-  initial: { opacity: 0, x: 28 },
+  initial: { opacity: 0, x: 20 },
   animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.7, ease: 'easeOut', delay },
+  transition: { duration: 0.5, ease: EASE_OUT, delay },
 })
 
 export default function Hero({ onOpenArchive, onOpenCv }) {
@@ -50,7 +52,7 @@ export default function Hero({ onOpenArchive, onOpenCv }) {
         {/* Left: Text */}
         <div>
           <motion.p {...fadeUp(0.1)} className="font-label text-primary text-xs tracking-widest uppercase mb-6">
-            <span style={{ color: '#9cff93' }}>▶</span>&nbsp;{t.hero_init}
+            <span style={{ color: 'var(--tertiary)' }}>▶</span>&nbsp;{t.hero_init}
           </motion.p>
 
           <motion.h1
@@ -70,7 +72,7 @@ export default function Hero({ onOpenArchive, onOpenCv }) {
 
           <motion.p {...fadeUp(0.3)} className="font-body text-secondary text-lg max-w-xl mb-10 leading-relaxed">
             Arquitecto full-stack especializado en el ecosistema{' '}
-            <span style={{ color: '#9cff93' }} className="font-label">Web3</span>.
+            <span style={{ color: 'var(--tertiary)' }} className="font-label">Web3</span>.
             Construyendo sistemas descentralizados seguros y de alto rendimiento con foco en{' '}
             <span style={{ color: 'var(--primary)' }} className="font-label">Rust</span> y{' '}
             <span style={{ color: 'var(--primary)' }} className="font-label">Stellar</span>.
@@ -126,10 +128,9 @@ export default function Hero({ onOpenArchive, onOpenCv }) {
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,rgba(0,0,0,.08) 45%,rgba(0,0,0,.7) 100%)', pointerEvents: 'none' }} />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right,rgba(75,0,130,.18),transparent 55%)', pointerEvents: 'none' }} />
             <div className="hero-badge font-label text-xs" style={{ position: 'absolute', top: 20, left: 20 }}>
-              <div style={{ background: 'rgba(0,0,0,.72)', border: '1px solid rgba(193,156,255,.22)', padding: '10px 14px', backdropFilter: 'blur(10px)' }}>
-                <p style={{ color: '#9cff93' }} className="mb-1">▶ USER_IDENTIFIED</p>
-                <p style={{ color: '#adaaaa' }} className="mb-1">hh.mauri2190@gmail.com</p>
-                <p style={{ color: 'rgba(193,156,255,.6)' }}>[ STATUS: ONLINE ]</p>
+              <div style={{ background: 'rgba(0,0,0,.72)', border: '1px solid rgba(193,156,255,.18)', padding: '8px 12px', backdropFilter: 'blur(10px)' }}>
+                <p style={{ color: 'var(--tertiary)' }} className="mb-0.5">▶ ONLINE</p>
+                <p style={{ color: 'rgba(193,156,255,.7)' }}>Mendoza, Argentina</p>
               </div>
             </div>
           </div>

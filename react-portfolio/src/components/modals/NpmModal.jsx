@@ -18,19 +18,19 @@ export default function NpmModal({ open, onClose }) {
 
     const es = lang === 'es'
     const lines = [
-      { text: '$ npm install @mauricio-medina/curriculum', color: '#9cff93', delay: 0 },
+      { text: '$ npm install @mauricio-medina/curriculum', color: 'var(--tertiary)', delay: 0 },
       { text: '', delay: 220 },
       { text: 'npm warn deprecated old-resume@1.0.0: skills outdated, upgrade required', color: '#c19cff', delay: 420 },
       { text: 'npm warn deprecated generic-portfolio@0.3.0: web3 modules missing', color: '#c19cff', delay: 700 },
       { text: '', delay: 900 },
       { text: es ? 'Resolviendo dependencias...' : 'Resolving dependencies...', color: '#777575', delay: 1050 },
-      { text: '  + rust@latest                             ✓', color: '#9cff93', delay: 1300 },
-      { text: '  + stellar@soroban-v0.9                    ✓', color: '#9cff93', delay: 1520 },
-      { text: '  + typescript@5.3.3                        ✓', color: '#9cff93', delay: 1740 },
-      { text: '  + react@18.2.0                            ✓', color: '#9cff93', delay: 1960 },
-      { text: '  + node.js@lts                             ✓', color: '#9cff93', delay: 2180 },
-      { text: '  + postgresql@16                           ✓', color: '#9cff93', delay: 2400 },
-      { text: '  + docker@latest                           ✓', color: '#9cff93', delay: 2620 },
+      { text: '  + rust@latest                             ✓', color: 'var(--tertiary)', delay: 1300 },
+      { text: '  + stellar@soroban-v0.9                    ✓', color: 'var(--tertiary)', delay: 1520 },
+      { text: '  + typescript@5.3.3                        ✓', color: 'var(--tertiary)', delay: 1740 },
+      { text: '  + react@18.2.0                            ✓', color: 'var(--tertiary)', delay: 1960 },
+      { text: '  + node.js@lts                             ✓', color: 'var(--tertiary)', delay: 2180 },
+      { text: '  + postgresql@16                           ✓', color: 'var(--tertiary)', delay: 2400 },
+      { text: '  + docker@latest                           ✓', color: 'var(--tertiary)', delay: 2620 },
       { text: '', delay: 2750 },
       { text: '> @mauricio-medina/curriculum@2.0.25 postinstall', color: '#c19cff', delay: 2900 },
       { text: es ? '> cargando datos de carrera...' : '> loading career data...', color: '#c19cff', delay: 3150 },
@@ -42,8 +42,8 @@ export default function NpmModal({ open, onClose }) {
       { text: es ? '  comunidad     CuyoConnect — 200+ devs' : '  community     CuyoConnect — 200+ devs', color: '#adaaaa', delay: 4900 },
       { text: es ? '  ubicación     Mendoza, Argentina' : '  location      Mendoza, Argentina', color: '#adaaaa', delay: 5100 },
       { text: '', delay: 5250 },
-      { text: es ? '✓ @mauricio-medina/curriculum@2.0.25 instalado correctamente' : '✓ @mauricio-medina/curriculum@2.0.25 installed successfully', color: '#9cff93', delay: 5450 },
-      { text: es ? '✓ Generando curriculum.pdf...' : '✓ Generating curriculum.pdf...', color: '#9cff93', delay: 5800 },
+      { text: es ? '✓ @mauricio-medina/curriculum@2.0.25 instalado correctamente' : '✓ @mauricio-medina/curriculum@2.0.25 installed successfully', color: 'var(--tertiary)', delay: 5450 },
+      { text: es ? '✓ Generando curriculum.pdf...' : '✓ Generating curriculum.pdf...', color: 'var(--tertiary)', delay: 5800 },
       { text: '', delay: 6000 },
       { text: es ? '> curriculum.pdf → descarga iniciada!' : '> curriculum.pdf → download started!', color: '#c19cff', delay: 6200, download: true },
     ]
@@ -104,9 +104,9 @@ export default function NpmModal({ open, onClose }) {
         >
           <motion.div
             key="npm-panel"
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.96 }}
+            initial={{ opacity: 0, scale: 0.96, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 0.28, ease: [0.23, 1, 0.32, 1] } }}
+            exit={{ opacity: 0, scale: 0.97, y: 6, transition: { duration: 0.18, ease: [0.77, 0, 0.175, 1] } }}
             style={{ width: 'min(680px,94vw)', background: '#0e0e0e', border: '1px solid rgba(193,156,255,.22)', boxShadow: '0 0 60px rgba(145,70,255,.12)' }}
           >
             {/* Title bar */}

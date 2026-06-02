@@ -26,9 +26,9 @@ export const T = {
     starmaker_desc1: 'Reconocido como Embajador oficial del programa Stellar Starmaker, representando al ecosistema Stellar en Argentina y Latinoamérica. Impulsor del crecimiento de la comunidad Web3 a través de CuyoConnect.',
     starmaker_desc2: 'Organización de eventos, workshops técnicos y hackathons para desarrolladores de la región con foco en Soroban y contratos inteligentes sobre Stellar.',
 
-    stellar_role: 'Protocol Engineer',
-    stellar_desc1: 'Profundamente involucrado en el ecosistema Stellar, construyendo primitivos financieros robustos con Rust. Desplegué múltiples proyectos de smart contracts en testnet, incluyendo lógica de tokens y flujos de transacciones.',
-    stellar_desc2: 'Actualmente preparando una aplicación para el SCF (Stellar Community Fund) para financiar un proyecto Web3 open-source.',
+    stellar_role: 'Rust Learner',
+    stellar_desc1: 'Aprendiendo Rust de forma autodidacta con foco en el ecosistema Stellar y Soroban. Experimentos en testnet, lectura de contratos existentes y práctica con la sintaxis y el modelo de ownership.',
+    stellar_desc2: '',
 
     alq_role: 'Senior Web Solutions | 2023 – 2024',
     alq_desc: 'Mi primera experiencia como desarrollador profesional en ALQ Agency, agencia de desarrollo y marketing digital. Desarrollé múltiples sitios y aplicaciones web para los clientes de la agencia. Ciclo completo: diseño UI/UX, ingeniería Frontend/Backend, administración de bases de datos y SysAdmin.',
@@ -39,8 +39,12 @@ export const T = {
     freelance_title: 'Desarrollador Full-Stack Freelance',
     freelance_desc: 'Soluciones digitales end-to-end para sectores de medios y retail. Ciclo completo: negociación comercial, relevamiento de requerimientos, diseño arquitectural y despliegue. Soporte técnico continuo y mantenimiento evolutivo.',
 
+    punatech_role: 'Mentor & Speaker | Mayo 2026',
+    punatech_desc: 'Mentor en hackathon y speaker en el AI Congress más grande del NOA. Puna Tech 2026 reunió más de 20 referentes tecnológicos de todo el país en Salta, Argentina.',
+
     projects_title: 'SYS_PROYECTOS',
     proj_own: 'PROYECTO PROPIO',
+    proj_client: 'CLIENTE',
     proj_visit: 'VISITAR →',
     uda_desc: 'Plataforma educativa propia que centraliza todos los apuntes de la Universidad del Aconcagua. Un hub de estudio colaborativo que permite a estudiantes compartir y acceder a material académico de forma organizada, ágil y gratuita.',
     guia_desc: 'Directorio de todas las carreras informáticas de Mendoza. Herramienta para quienes quieren iniciar en tecnología, unificando universidades, institutos y cursos de la región.',
@@ -141,9 +145,9 @@ export const T = {
     starmaker_desc1: 'Recognized as an official ambassador of the Stellar Starmaker program, representing the Stellar ecosystem across Argentina and Latin America. Driving Web3 community growth through CuyoConnect.',
     starmaker_desc2: 'Organizing events, technical workshops, and hackathons for regional developers focused on Soroban smart contracts and the Stellar ecosystem.',
 
-    stellar_role: 'Protocol Engineer',
-    stellar_desc1: 'Deeply involved in the Stellar ecosystem, building robust financial primitives using Rust. Deployed multiple smart contract projects on Stellar testnet, including token logic and transaction workflows.',
-    stellar_desc2: 'Currently preparing a Stellar Community Fund (SCF) grant application to fund an open-source Web3 project.',
+    stellar_role: 'Rust Learner',
+    stellar_desc1: 'Self-teaching Rust with a focus on the Stellar and Soroban ecosystem. Running experiments on testnet, reading existing contracts, and practicing ownership and type system fundamentals.',
+    stellar_desc2: '',
 
     alq_role: 'Senior Web Solutions | 2023 – 2024',
     alq_desc: 'My first experience as a professional developer at ALQ Agency, a development and digital marketing agency. Built multiple websites and web applications for agency clients. Full cycle: UI/UX design, Frontend/Backend engineering, database administration, and SysAdmin.',
@@ -154,8 +158,12 @@ export const T = {
     freelance_title: 'Freelance Full-Stack Developer',
     freelance_desc: 'End-to-end digital solutions for media and retail sectors. Full lifecycle: commercial negotiation, requirements gathering, architecture design, and deployment. Continuous technical support and evolutionary maintenance.',
 
+    punatech_role: 'Mentor & Speaker | May 2026',
+    punatech_desc: 'Hackathon mentor and speaker at the largest AI congress in the NOA region. Puna Tech 2026 brought together over 20 tech leaders from across Argentina in Salta.',
+
     projects_title: 'SYS_PROJECTS',
     proj_own: 'OWN PROJECT',
+    proj_client: 'CLIENT',
     proj_visit: 'VISIT →',
     uda_desc: 'Personal educational platform centralizing all notes from the Universidad del Aconcagua. A collaborative study hub allowing students to share and access academic material in an organized, agile, and free way.',
     guia_desc: 'Directory of all IT careers in Mendoza. A tool for those who want to start in tech, unifying universities, institutes and courses in the region.',
