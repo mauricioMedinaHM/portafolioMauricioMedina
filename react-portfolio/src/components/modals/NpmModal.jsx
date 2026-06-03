@@ -74,7 +74,7 @@ export default function NpmModal({ open, onClose }) {
         if (download && !downloadedRef.current) {
           downloadedRef.current = true
           const link = document.createElement('a')
-          link.href = '/CV/Mauricio Medina CV WEB3.pdf'
+          link.href = '/CV/Mauricio_Medina_CV.pdf'
           link.download = 'Mauricio_Medina_CV.pdf'
           document.body.appendChild(link)
           link.click()

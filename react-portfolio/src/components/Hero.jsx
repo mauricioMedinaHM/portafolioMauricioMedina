@@ -62,43 +62,25 @@ export default function Hero({ onOpenArchive, onOpenCv }) {
           >
             Mauricio <br />
             <span className="glitch-wrap">
-              <span style={{ background: 'linear-gradient(135deg,#9146ff,#c19cff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>
+              <span style={{ color: '#9146ff' }}>
                 Medina
               </span>
-              <span className="glitch-clone glitch-a" aria-hidden="true" style={{ background: 'linear-gradient(135deg,#9146ff,#c19cff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Medina</span>
-              <span className="glitch-clone glitch-b" aria-hidden="true" style={{ background: 'linear-gradient(135deg,#9146ff,#c19cff)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>Medina</span>
+              <span className="glitch-clone glitch-a" aria-hidden="true" style={{ color: '#9146ff' }}>Medina</span>
+              <span className="glitch-clone glitch-b" aria-hidden="true" style={{ color: '#9146ff' }}>Medina</span>
             </span>
           </motion.h1>
 
           <motion.p {...fadeUp(0.3)} className="font-body text-secondary text-lg max-w-xl mb-10 leading-relaxed">
-            Arquitecto full-stack especializado en el ecosistema{' '}
-            <span style={{ color: 'var(--tertiary)' }} className="font-label">Web3</span>.
-            Construyendo sistemas descentralizados seguros y de alto rendimiento con foco en{' '}
-            <span style={{ color: 'var(--primary)' }} className="font-label">Rust</span> y{' '}
-            <span style={{ color: 'var(--primary)' }} className="font-label">Stellar</span>.
+            Desarrollador full stack con foco en construir productos reales con las herramientas de hoy — incluyendo{' '}
+            <span style={{ color: 'var(--tertiary)' }} className="font-label">inteligencia artificial</span>.
           </motion.p>
 
           <motion.div {...fadeUp(0.4)} id="hero-btns" className="flex flex-wrap gap-4">
-            <button className="btn-primary" onClick={onOpenArchive}>{t.hero_btn_archive}</button>
-            <button className="btn-ghost" onClick={onOpenCv}>{t.hero_btn_cv}</button>
-            <a
-              className="btn-whatsapp"
-              href="https://wa.me/542612572860"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <WhatsAppIcon />
-              {t.hero_btn_whatsapp}
-            </a>
+            <button className="btn-primary" onClick={onOpenCv}>{t.hero_btn_cv}</button>
           </motion.div>
 
           {/* Stats */}
           <motion.div {...fadeUp(0.5)} className="flex gap-8 mt-12">
-            <div>
-              <p className="font-label text-primary text-xl font-bold">5+</p>
-              <p className="font-label text-on-surface-variant text-xs uppercase">{t.stat_years}</p>
-            </div>
-            <div style={{ width: 1, background: 'rgba(73,72,71,.4)' }} />
             <div>
               <p className="font-label text-tertiary text-xl font-bold">{t.stat_hack_val}</p>
               <p className="font-label text-on-surface-variant text-xs uppercase">{t.stat_hack_label}</p>
@@ -114,29 +96,48 @@ export default function Hero({ onOpenArchive, onOpenCv }) {
         {/* Right: Photo + Terminal */}
         <motion.div
           {...fadeRight(0.2)}
-          className="hero-photo-section relative flex items-start"
-          style={{ paddingBottom: 110 }}
+          className="hero-photo-section relative"
+          style={{ paddingBottom: 120 }}
         >
-          {/* Photo */}
-          <div className="hero-photo-wrap relative w-full overflow-hidden" style={{ height: 660, border: '1px solid rgba(193,156,255,.18)' }}>
+          {/* Ambient glow */}
+          <div style={{
+            position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)',
+            width: '80%', height: '60%',
+            background: 'radial-gradient(ellipse, rgba(145,70,255,.14) 0%, transparent 70%)',
+            filter: 'blur(48px)',
+            pointerEvents: 'none',
+            zIndex: 0,
+          }} />
+
+          {/* Photo — arch editorial */}
+          <div className="hero-photo-wrap relative overflow-hidden" style={{
+            width: '100%',
+            height: 620,
+            borderRadius: 0,
+            boxShadow: '0 0 0 1px rgba(145,70,255,.1), 0 32px 80px rgba(0,0,0,.55)',
+          }}>
             <img
               src="/img/mauricioFotoPerfil.webp"
               alt="Mauricio Medina"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 18%', filter: 'grayscale(5%) contrast(1.05) brightness(.95)' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 12%', filter: 'grayscale(5%) contrast(1.06) brightness(.93)' }}
             />
-            <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px)', pointerEvents: 'none' }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,rgba(0,0,0,.08) 45%,rgba(0,0,0,.7) 100%)', pointerEvents: 'none' }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right,rgba(75,0,130,.18),transparent 55%)', pointerEvents: 'none' }} />
-            <div className="hero-badge font-label text-xs" style={{ position: 'absolute', top: 20, left: 20 }}>
-              <div style={{ background: 'rgba(0,0,0,.72)', border: '1px solid rgba(193,156,255,.18)', padding: '8px 12px', backdropFilter: 'blur(10px)' }}>
-                <p style={{ color: 'var(--tertiary)' }} className="mb-0.5">▶ ONLINE</p>
-                <p style={{ color: 'rgba(193,156,255,.7)' }}>Mendoza, Argentina</p>
+            {/* Scan-line texture */}
+            <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px)', pointerEvents: 'none' }} />
+            {/* Bottom fade into terminal */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.72) 100%)', pointerEvents: 'none' }} />
+            {/* Left purple tint */}
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(120deg,rgba(75,0,130,.18) 0%,transparent 50%)', pointerEvents: 'none' }} />
+            {/* Online badge */}
+            <div className="hero-badge font-label text-xs" style={{ position: 'absolute', top: 28, right: 28 }}>
+              <div style={{ background: 'rgba(0,0,0,.76)', border: '1px solid rgba(145,70,255,.22)', padding: '8px 14px', backdropFilter: 'blur(12px)', borderRadius: 8 }}>
+                <p style={{ color: '#9146ff' }} className="mb-0.5">▶ ONLINE</p>
+                <p style={{ color: 'rgba(193,156,255,.65)' }}>Mendoza, Argentina</p>
               </div>
             </div>
           </div>
 
           {/* Terminal */}
-          <div className="hero-terminal" style={{ position: 'absolute', bottom: 0, left: '18%', right: -12, zIndex: 20 }}>
+          <div className="hero-terminal" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 20 }}>
             <div className="terminal-glow border border-outline-variant/20 overflow-hidden" style={{ background: 'rgba(8,8,8,.96)', backdropFilter: 'blur(16px)', boxShadow: '0 8px 40px rgba(0,0,0,.7)' }}>
               <div className="term-header" style={{ background: 'rgba(26,26,26,.98)' }}>
                 <div className="flex gap-1.5">
