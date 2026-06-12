@@ -4,13 +4,14 @@ import { useLang } from '../context/LanguageContext'
 import { revealVariants, viewportOnce } from '../hooks/useScrollReveal'
 
 const slides = [
-  { src: '/img/carrusel/Cuyo_Connet_017.webp', label: 'cuyo_connect_017.webp', caption: '◈ CuyoConnect — Evento presencial · Mendoza, ARG' },
   { src: '/img/carrusel/Cuyo_Connet_016.webp', label: 'cuyo_connect_016.webp', caption: '◈ CuyoConnect — Comunidad Web3 · Mendoza, ARG' },
   { src: '/img/carrusel/CharlaInitroWEb3.webp', label: 'charla_web3.webp', caption: '◈ Charla — Intro a Web3 · Charla presencial' },
   { src: '/img/carrusel/mento.webp', label: 'mentoring.webp', caption: '◈ Mentoring — Guiando nuevos devs' },
   { src: '/img/carrusel/mentorStellar.webp', label: 'mentor_stellar.webp', caption: '◈ Mentor Stellar · Ecosistema Blockchain' },
   { src: '/img/carrusel/Copia de _DSC7385ig.webp', label: 'event_photo.webp', caption: '◈ Evento comunidad · Mauricio Medina' },
   { src: '/img/carrusel/mauricioFotoPerfil.webp', label: 'perfil.webp', caption: '◈ Mauricio Medina · Web3 Protocol Architect' },
+  { src: '/img/carrusel/Charla Puna Tech.webp', label: 'charla_puna_tech.webp', caption: '◈ Charla — Puna Tech · Comunidad Web3' },
+  { src: '/img/carrusel/Speaker Puna Tech.webp', label: 'speaker_puna_tech.webp', caption: '◈ Speaker — Puna Tech · Evento presencial' },
 ]
 
 export default function Community() {

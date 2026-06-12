@@ -117,7 +117,7 @@ export default function Hero({ onOpenArchive, onOpenCv }) {
             boxShadow: '0 0 0 1px rgba(145,70,255,.1), 0 32px 80px rgba(0,0,0,.55)',
           }}>
             <img
-              src="/img/mauricioFotoPerfil.webp"
+              src="/img/FOTOPERFIL.webp"
               alt="Mauricio Medina"
               style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 12%', filter: 'grayscale(5%) contrast(1.06) brightness(.93)' }}
             />
