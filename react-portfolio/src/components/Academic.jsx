@@ -1,16 +1,16 @@
 import { motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
-import { revealVariants, viewportOnce } from '../hooks/useScrollReveal'
+import { revealVariants, staggerContainer, staggerItem, viewportOnce } from '../hooks/useScrollReveal'
+
+const ENTRIES = [
+  { id: 'uda', dateKey: 'edu1_date', dateTime: '2024/2027', titleKey: 'edu1_title', instKey: 'edu1_inst', focusKey: 'edu1_focus' },
+  { id: 'odisea', dateKey: 'edu2_date', dateTime: '2025', titleKey: 'edu2_title', instKey: 'edu2_inst', focusKey: 'edu2_focus' },
+  { id: 'google', dateKey: 'edu3_date', dateTime: '2020', titleKey: 'edu3_title', instKey: 'edu3_inst', focusKey: 'edu3_focus' },
+  { id: 'potrero', dateKey: 'edu4_date', dateTime: '2018', titleKey: 'edu4_title', instKey: 'edu4_inst', focusKey: 'edu4_focus' },
+]
 
 export default function Academic() {
   const { t } = useLang()
-
-  const entries = [
-    { titleKey: 'edu1_title', instKey: 'edu1_inst', focusKey: 'edu1_focus', badgeKey: 'edu_in_progress', badgeColor: 'text-primary', badgeBorder: 'border-primary/20' },
-    { titleKey: 'edu2_title', inst: 'Odisea · 2025', focusKey: 'edu2_focus', badgeKey: 'edu_verified', badgeColor: 'text-tertiary', badgeBorder: 'border-tertiary/20' },
-    { titleKey: 'edu3_title', inst: 'Google · 2020', focusKey: 'edu3_focus', badgeKey: 'edu_verified', badgeColor: 'text-tertiary', badgeBorder: 'border-tertiary/20' },
-    { titleKey: 'edu4_title', inst: 'Potrero Digital · 2018', focusKey: 'edu4_focus', badgeKey: 'edu_completed', badgeColor: 'text-tertiary', badgeBorder: 'border-tertiary/20' },
-  ]
 
   return (
     <section id="academic" className="py-24 px-6 md:px-12 lg:px-24" style={{ background: '#0e0e0e' }}>
@@ -19,36 +19,41 @@ export default function Academic() {
           variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
           className="flex items-center gap-4 mb-16"
         >
-          <h2 className="sec-title">ACADEMIC_INIT</h2>
+          <h2 id="academic-title" className="sec-title">{t.academic_title}</h2>
           <div className="divider" />
         </motion.div>
 
-        <div>
-          {entries.map((entry, i) => (
-            <motion.div
-              key={entry.titleKey}
-              variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-              transition={{ delay: i * 0.1 }}
-              className="flex flex-col md:flex-row md:items-center justify-between py-8 group card-hover px-4"
-              style={{ borderBottom: i < entries.length - 1 ? '1px solid rgba(73,72,71,.2)' : 'none' }}
-            >
-              <div>
-                <h4 className="font-headline text-xl font-bold text-on-surface group-hover:text-primary transition-colors">
-                  {t[entry.titleKey]}
-                </h4>
-                <p className="font-label text-sm text-outline uppercase mt-1">
-                  {entry.instKey ? t[entry.instKey] : entry.inst}
-                </p>
-                <p className="font-label text-xs text-on-surface-variant mt-1">{t[entry.focusKey]}</p>
+        <motion.ol
+          className="exp-log"
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="visible"
+          viewport={viewportOnce}
+          aria-labelledby="academic-title"
+        >
+          {ENTRIES.map((entry) => (
+            <motion.li key={entry.id} variants={staggerItem} className="exp-item">
+              <div className="exp-entry">
+                <time className="exp-date-col" dateTime={entry.dateTime}>{t[entry.dateKey]}</time>
+                <div className="exp-rail" aria-hidden="true">
+                  <span className="exp-node" />
+                </div>
+                <div className="exp-body">
+                  <h3 className="font-headline text-base md:text-lg font-semibold text-on-surface leading-snug">
+                    {t[entry.titleKey]}
+                  </h3>
+                  <div className="exp-meta mt-1">
+                    <p className="edu-inst">{t[entry.instKey]}</p>
+                    <span className="exp-date-mobile font-label text-[10px] uppercase tracking-widest text-outline">
+                      {t[entry.dateKey]}
+                    </span>
+                  </div>
+                  <p className="exp-copy mt-2">{t[entry.focusKey]}</p>
+                </div>
               </div>
-              <div className="mt-4 md:mt-0 flex-shrink-0">
-                <span className={`font-label text-sm tracking-widest border px-3 py-1 ${entry.badgeColor} ${entry.badgeBorder}`}>
-                  {t[entry.badgeKey]}
-                </span>
-              </div>
-            </motion.div>
+            </motion.li>
           ))}
-        </div>
+        </motion.ol>
       </div>
     </section>
   )

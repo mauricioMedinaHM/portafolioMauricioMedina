@@ -287,6 +287,12 @@ a.exp-entry {
   gap: 0.75rem;
 }
 .exp-role { color: var(--exp-accent); }
+.edu-inst {
+  margin: 0;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.875rem;
+  color: #adaaaa;
+}
 .exp-copy {
   max-width: 68ch;
   font-family: 'Manrope', sans-serif;
