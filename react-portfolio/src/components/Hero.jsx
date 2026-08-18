@@ -1,166 +1,77 @@
-import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
-import MatrixRain from './MatrixRain'
-import Typewriter from './Typewriter'
 
 const EASE_OUT = [0.23, 1, 0.32, 1]
+const TALK_URL = 'https://www.linkedin.com/in/mauricio-medina-dev/'
 
-const fadeUp = (delay = 0) => ({
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5, ease: EASE_OUT, delay },
-})
-
-const fadeRight = (delay = 0) => ({
-  initial: { opacity: 0, x: 20 },
-  animate: { opacity: 1, x: 0 },
-  transition: { duration: 0.5, ease: EASE_OUT, delay },
-})
-
-export default function Hero({ onOpenArchive, onOpenCv }) {
+export default function Hero({ onOpenCv }) {
   const { t } = useLang()
-  const clockElRef = useRef(null)
-  const [clock, setClock] = useState('--:--:--')
-
-  useEffect(() => {
-    function tick() {
-      const n = new Date()
-      const time = [n.getHours(), n.getMinutes(), n.getSeconds()]
-        .map(v => String(v).padStart(2, '0'))
-        .join(':')
-      setClock(time)
-      const loc = document.getElementById('term-loc')
-      if (loc) loc.textContent = `Mendoza, Argentina [SYS_TIME: ${time}]`
-    }
-    tick()
-    const iv = setInterval(tick, 1000)
-    return () => clearInterval(iv)
-  }, [])
 
   return (
-    <section
-      id="about"
-      className="min-h-screen flex flex-col justify-center px-6 md:px-12 lg:px-24 py-20 relative overflow-hidden"
-      style={{ background: '#000' }}
-    >
-      <MatrixRain />
-      <div className="ambient" style={{ width: 500, height: 500, background: 'rgba(75,0,130,.15)', top: -100, left: -100 }} />
-      <div className="ambient" style={{ width: 300, height: 300, background: 'rgba(145,70,255,.08)', bottom: 0, right: 100 }} />
-
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-10 items-center relative z-10 min-h-screen py-8">
-        {/* Left: Text */}
+    <section id="about" className="hero-section px-6 md:px-12 lg:px-24">
+      <motion.div
+        className="hero-grid max-w-7xl mx-auto w-full"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.45, ease: EASE_OUT }}
+      >
         <div>
-          <motion.p {...fadeUp(0.1)} className="font-label text-primary text-xs tracking-widest uppercase mb-6">
-            <span style={{ color: 'var(--tertiary)' }}>▶</span>&nbsp;{t.hero_init}
-          </motion.p>
+          <h1 className="hero-name font-headline font-bold text-on-surface leading-none mb-4">
+            <span style={{ whiteSpace: 'nowrap' }}>Mauricio</span>
+            <br />
+            <span style={{ color: 'var(--primary)' }}>Medina</span>
+          </h1>
 
-          <motion.h1
-            {...fadeUp(0.2)}
-            className="font-headline font-bold text-on-surface leading-none mb-6"
-            style={{ fontSize: 'clamp(3rem,8vw,5.5rem)' }}
-          >
-            Mauricio <br />
-            <span className="glitch-wrap">
-              <span style={{ color: '#9146ff' }}>
-                Medina
-              </span>
-              <span className="glitch-clone glitch-a" aria-hidden="true" style={{ color: '#9146ff' }}>Medina</span>
-              <span className="glitch-clone glitch-b" aria-hidden="true" style={{ color: '#9146ff' }}>Medina</span>
-            </span>
-          </motion.h1>
+          <p className="font-label text-sm md:text-base text-primary mb-5">
+            {t.hero_role}
+          </p>
 
-          <motion.p {...fadeUp(0.3)} className="font-body text-secondary text-lg max-w-xl mb-10 leading-relaxed">
-            Desarrollador full stack con foco en construir productos reales con las herramientas de hoy — incluyendo{' '}
-            <span style={{ color: 'var(--tertiary)' }} className="font-label">inteligencia artificial</span>.
-          </motion.p>
+          <p className="font-body text-secondary text-base md:text-lg max-w-xl mb-8 leading-relaxed">
+            {t.hero_desc_plain}
+          </p>
 
-          <motion.div {...fadeUp(0.4)} id="hero-btns" className="flex flex-wrap gap-4">
-            <button className="btn-primary" onClick={onOpenCv}>{t.hero_btn_cv}</button>
-          </motion.div>
-
-          {/* Stats */}
-          <motion.div {...fadeUp(0.5)} className="flex gap-8 mt-12">
-            <div>
-              <p className="font-label text-tertiary text-xl font-bold">{t.stat_hack_val}</p>
-              <p className="font-label text-on-surface-variant text-xs uppercase">{t.stat_hack_label}</p>
-            </div>
-            <div style={{ width: 1, background: 'rgba(73,72,71,.4)' }} />
-            <div>
-              <p className="font-label text-primary text-xl font-bold">500+</p>
-              <p className="font-label text-on-surface-variant text-xs uppercase">{t.stat_community}</p>
-            </div>
-          </motion.div>
+          <div id="hero-btns" className="flex flex-wrap gap-3">
+            <a
+              href={TALK_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary inline-flex items-center gap-2"
+            >
+              <LinkedInIcon />
+              {t.hero_btn_talk}
+            </a>
+            <button type="button" className="btn-ghost inline-flex items-center" onClick={onOpenCv}>
+              {t.hero_btn_cv}
+            </button>
+          </div>
         </div>
 
-        {/* Right: Photo + Terminal */}
-        <motion.div
-          {...fadeRight(0.2)}
-          className="hero-photo-section relative"
-          style={{ paddingBottom: 120 }}
-        >
-          {/* Ambient glow */}
-          <div style={{
-            position: 'absolute', top: '10%', left: '50%', transform: 'translateX(-50%)',
-            width: '80%', height: '60%',
-            background: 'radial-gradient(ellipse, rgba(145,70,255,.14) 0%, transparent 70%)',
-            filter: 'blur(48px)',
-            pointerEvents: 'none',
-            zIndex: 0,
-          }} />
-
-          {/* Photo — arch editorial */}
-          <div className="hero-photo-wrap relative overflow-hidden" style={{
-            width: '100%',
-            height: 620,
-            borderRadius: 0,
-            boxShadow: '0 0 0 1px rgba(145,70,255,.1), 0 32px 80px rgba(0,0,0,.55)',
-          }}>
-            <img
-              src="/img/FOTOPERFIL.webp"
-              alt="Mauricio Medina"
-              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 12%', filter: 'grayscale(5%) contrast(1.06) brightness(.93)' }}
-            />
-            {/* Scan-line texture */}
-            <div style={{ position: 'absolute', inset: 0, background: 'repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.03) 3px,rgba(0,0,0,.03) 4px)', pointerEvents: 'none' }} />
-            {/* Bottom fade into terminal */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.72) 100%)', pointerEvents: 'none' }} />
-            {/* Left purple tint */}
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(120deg,rgba(75,0,130,.18) 0%,transparent 50%)', pointerEvents: 'none' }} />
-            {/* Online badge */}
-            <div className="hero-badge font-label text-xs" style={{ position: 'absolute', top: 28, right: 28 }}>
-              <div style={{ background: 'rgba(0,0,0,.76)', border: '1px solid rgba(145,70,255,.22)', padding: '8px 14px', backdropFilter: 'blur(12px)', borderRadius: 8 }}>
-                <p style={{ color: '#9146ff' }} className="mb-0.5">▶ ONLINE</p>
-                <p style={{ color: 'rgba(193,156,255,.65)' }}>Mendoza, Argentina</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Terminal */}
-          <div className="hero-terminal" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 20 }}>
-            <div className="terminal-glow border border-outline-variant/20 overflow-hidden" style={{ background: 'rgba(8,8,8,.96)', backdropFilter: 'blur(16px)', boxShadow: '0 8px 40px rgba(0,0,0,.7)' }}>
-              <div className="term-header" style={{ background: 'rgba(26,26,26,.98)' }}>
-                <div className="flex gap-1.5">
-                  <div className="term-dot" />
-                  <div className="term-dot" />
-                  <div className="term-dot" />
-                </div>
-                <span className="flex-1 text-center font-label text-outline text-xs uppercase tracking-widest">bash — 80x24</span>
-                <span className="font-label text-xs text-on-surface-variant">{clock}</span>
-              </div>
-              <Typewriter clockRef={clockElRef} />
-            </div>
-          </div>
-        </motion.div>
-      </div>
+        <figure className="hero-portrait">
+          <img
+            src="/img/FOTOPERFIL.webp"
+            alt="Mauricio Medina"
+            width="1200"
+            height="1804"
+            fetchPriority="high"
+            decoding="async"
+          />
+        </figure>
+      </motion.div>
     </section>
   )
 }
 
-function WhatsAppIcon() {
+function LinkedInIcon() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    <svg
+      aria-hidden="true"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className="flex-shrink-0"
+    >
+      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
     </svg>
   )
 }
