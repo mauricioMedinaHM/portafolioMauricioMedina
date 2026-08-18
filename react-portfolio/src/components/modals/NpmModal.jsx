@@ -1,11 +1,27 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'motion/react'
 import { useLang } from '../../context/LanguageContext'
+import { useDialog } from '../../hooks/useDialog'
+import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+
+function triggerDownload() {
+  const link = document.createElement('a')
+  link.href = '/CV/Mauricio_Medina_CV.pdf'
+  link.download = 'Mauricio_Medina_CV.pdf'
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
 
 export default function NpmModal({ open, onClose }) {
-  const { lang } = useLang()
+  const { lang, t } = useLang()
+  const reduced = usePrefersReducedMotion()
   const outputRef = useRef(null)
+  const containerRef = useRef(null)
+  const panelRef = useRef(null)
   const downloadedRef = useRef(false)
+  const close = useCallback(() => onClose(), [onClose])
+  useDialog({ open, onClose: close, containerRef, panelRef })
 
   useEffect(() => {
     if (!open) {
@@ -23,7 +39,7 @@ export default function NpmModal({ open, onClose }) {
       { text: 'npm warn deprecated old-resume@1.0.0: skills outdated, upgrade required', color: '#c19cff', delay: 420 },
       { text: 'npm warn deprecated generic-portfolio@0.3.0: web3 modules missing', color: '#c19cff', delay: 700 },
       { text: '', delay: 900 },
-      { text: es ? 'Resolviendo dependencias...' : 'Resolving dependencies...', color: '#777575', delay: 1050 },
+      { text: es ? 'Resolviendo dependencias...' : 'Resolving dependencies...', color: '#adaaaa', delay: 1050 },
       { text: '  + rust@latest                             ✓', color: 'var(--tertiary)', delay: 1300 },
       { text: '  + stellar@soroban-v0.9                    ✓', color: 'var(--tertiary)', delay: 1520 },
       { text: '  + typescript@5.3.3                        ✓', color: 'var(--tertiary)', delay: 1740 },
@@ -49,79 +65,103 @@ export default function NpmModal({ open, onClose }) {
     ]
 
     const timers = []
+    const intervals = []
 
-    lines.forEach(({ text, color, delay, progress, download }) => {
-      const tid = setTimeout(() => {
-        if (!output) return
-        const p = document.createElement('p')
-        p.style.cssText = `color:${color || '#adaaaa'};margin:0;white-space:pre;`
+    function appendLine({ text, color, progress, download }) {
+      const p = document.createElement('p')
+      p.style.cssText = `color:${color || '#adaaaa'};margin:0;white-space:pre;`
 
-        if (progress) {
-          p.textContent = '  [' + ' '.repeat(32) + '] 0%'
-          output.appendChild(p)
-          output.scrollTop = output.scrollHeight
-          let pct = 0
-          const iv = setInterval(() => {
-            pct = Math.min(100, pct + 4)
-            const filled = Math.floor((pct / 100) * 32)
-            p.textContent = '  [' + '█'.repeat(filled) + ' '.repeat(32 - filled) + '] ' + pct + '%'
-            output.scrollTop = output.scrollHeight
-            if (pct >= 100) clearInterval(iv)
-          }, 32)
-          return
-        }
-
-        if (download && !downloadedRef.current) {
-          downloadedRef.current = true
-          const link = document.createElement('a')
-          link.href = '/CV/Mauricio_Medina_CV.pdf'
-          link.download = 'Mauricio_Medina_CV.pdf'
-          document.body.appendChild(link)
-          link.click()
-          document.body.removeChild(link)
-        }
-
-        p.textContent = text
+      if (progress && !reduced) {
+        p.textContent = '  [' + ' '.repeat(32) + '] 0%'
         output.appendChild(p)
         output.scrollTop = output.scrollHeight
-      }, delay)
+        let pct = 0
+        const iv = setInterval(() => {
+          pct = Math.min(100, pct + 4)
+          const filled = Math.floor((pct / 100) * 32)
+          p.textContent = '  [' + '█'.repeat(filled) + ' '.repeat(32 - filled) + '] ' + pct + '%'
+          output.scrollTop = output.scrollHeight
+          if (pct >= 100) clearInterval(iv)
+        }, 32)
+        intervals.push(iv)
+        return
+      }
+
+      if (download && !downloadedRef.current) {
+        downloadedRef.current = true
+        triggerDownload()
+      }
+
+      p.textContent = text
+      output.appendChild(p)
+      output.scrollTop = output.scrollHeight
+    }
+
+    if (reduced) {
+      lines.forEach(appendLine)
+      return () => {}
+    }
+
+    lines.forEach(line => {
+      const tid = setTimeout(() => appendLine(line), line.delay)
       timers.push(tid)
     })
 
-    return () => timers.forEach(clearTimeout)
-  }, [open, lang])
+    return () => {
+      timers.forEach(clearTimeout)
+      intervals.forEach(clearInterval)
+    }
+  }, [open, lang, reduced])
 
   return (
     <AnimatePresence>
       {open && (
         <motion.div
-          key="npm-backdrop"
+          key="npm-root"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          onClick={e => { if (e.target === e.currentTarget) onClose() }}
-          style={{ display: 'flex', position: 'fixed', inset: 0, zIndex: 9998, background: 'rgba(0,0,0,.88)', backdropFilter: 'blur(10px)', alignItems: 'center', justifyContent: 'center', padding: 20 }}
+          style={{ position: 'fixed', inset: 0, zIndex: 9998 }}
         >
-          <motion.div
-            key="npm-panel"
-            initial={{ opacity: 0, scale: 0.96, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 0.28, ease: [0.23, 1, 0.32, 1] } }}
-            exit={{ opacity: 0, scale: 0.97, y: 6, transition: { duration: 0.18, ease: [0.77, 0, 0.175, 1] } }}
-            style={{ width: 'min(680px,94vw)', background: '#0e0e0e', border: '1px solid rgba(193,156,255,.22)', boxShadow: '0 0 60px rgba(145,70,255,.12)' }}
+          <div
+            ref={containerRef}
+            onClick={e => { if (e.target === e.currentTarget) onClose() }}
+            style={{ display: 'flex', position: 'absolute', inset: 0, background: 'rgba(0,0,0,.88)', backdropFilter: 'blur(10px)', alignItems: 'center', justifyContent: 'center', padding: 20 }}
           >
-            {/* Title bar */}
-            <div style={{ background: '#201f1f', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid rgba(73,72,71,.3)' }}>
-              <div style={{ display: 'flex', gap: 6, marginRight: 12 }}>
-                {[1, 2, 3].map(i => <span key={i} style={{ width: 10, height: 10, background: '#494847', display: 'inline-block' }} />)}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 0.28, ease: [0.23, 1, 0.32, 1] } }}
+              exit={{ opacity: 0, scale: 0.97, y: 6, transition: { duration: 0.18, ease: [0.77, 0, 0.175, 1] } }}
+              style={{ width: 'min(680px,94vw)', background: '#0e0e0e', border: '1px solid rgba(193,156,255,.22)', boxShadow: '0 0 60px rgba(145,70,255,.12)' }}
+            >
+              <div
+                ref={panelRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="npm-title"
+                tabIndex={-1}
+              >
+                <div style={{ background: '#201f1f', padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid rgba(73,72,71,.3)' }}>
+                  <div style={{ display: 'flex', gap: 6, marginRight: 12 }} aria-hidden="true">
+                    {[1, 2, 3].map(i => <span key={i} style={{ width: 10, height: 10, background: '#494847', display: 'inline-block' }} />)}
+                  </div>
+                  <span id="npm-title" style={{ color: '#adaaaa', fontFamily: "'Fira Code',monospace", fontSize: 11, letterSpacing: '.05em' }}>
+                    {t.a11y_cv_modal}
+                  </span>
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={() => { if (!downloadedRef.current) { downloadedRef.current = true; triggerDownload() } }}
+                    style={{ marginLeft: 'auto', padding: '6px 12px', fontSize: 10 }}
+                  >
+                    {t.a11y_download_now}
+                  </button>
+                  <button type="button" onClick={onClose} aria-label={t.a11y_close} style={{ background: 'none', border: 'none', color: '#adaaaa', fontSize: 16, cursor: 'pointer', lineHeight: 1, padding: '0 4px' }}>✕</button>
+                </div>
+                <div ref={outputRef} role="log" aria-live="polite" style={{ padding: '20px 24px', minHeight: 240, maxHeight: '55vh', overflowY: 'auto', fontFamily: "'Fira Code',monospace", fontSize: 13, lineHeight: 1.8 }} />
               </div>
-              <span style={{ color: '#777575', fontFamily: "'Fira Code',monospace", fontSize: 11, letterSpacing: '.05em' }}>
-                bash — npm install @mauricio-medina/curriculum
-              </span>
-              <button onClick={onClose} style={{ marginLeft: 'auto', background: 'none', border: 'none', color: '#494847', fontSize: 16, cursor: 'pointer', lineHeight: 1, padding: '0 4px' }}>✕</button>
-            </div>
-            {/* Output */}
-            <div ref={outputRef} style={{ padding: '20px 24px', minHeight: 240, maxHeight: '55vh', overflowY: 'auto', fontFamily: "'Fira Code',monospace", fontSize: 13, lineHeight: 1.8 }} />
-          </motion.div>
+            </motion.div>
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

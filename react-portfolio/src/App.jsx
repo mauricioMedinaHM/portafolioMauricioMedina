@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
-import { LanguageProvider } from './context/LanguageContext'
-import BootScreen from './components/BootScreen'
+import { MotionConfig } from 'motion/react'
+import { LanguageProvider, useLang } from './context/LanguageContext'
 import Navigation from './components/Navigation'
 import Hero from './components/Hero'
 import BlockchainLog from './components/BlockchainLog'
@@ -16,42 +16,48 @@ import MobileBottomNav from './components/MobileBottomNav'
 import ArchiveModal from './components/modals/ArchiveModal'
 import NpmModal from './components/modals/NpmModal'
 
-export default function App() {
-  const [booted, setBooted] = useState(false)
+function Portfolio() {
+  const { t } = useLang()
   const [archiveOpen, setArchiveOpen] = useState(false)
   const [npmOpen, setNpmOpen] = useState(false)
 
-  const handleBoot = useCallback(() => setBooted(true), [])
   const openArchive = useCallback(() => setArchiveOpen(true), [])
   const openCv = useCallback(() => setNpmOpen(true), [])
+  const closeArchive = useCallback(() => setArchiveOpen(false), [])
+  const closeCv = useCallback(() => setNpmOpen(false), [])
 
   return (
-    <LanguageProvider>
-      {!booted && <BootScreen onDone={handleBoot} />}
+    <>
+      <a href="#main-content" className="skip-link">{t.a11y_skip_content}</a>
+      <Navigation onOpenCv={openCv} />
 
-      {booted && (
-        <>
-          <Navigation onOpenCv={openCv} />
+      <main id="main-content">
+        <Hero onOpenCv={openCv} />
+        <BlockchainLog />
+        <FullStackHistory />
+        <Projects onOpenArchive={openArchive} />
+        <TechStack />
+        <CuyoConnect />
+        <Community />
+        <Academic />
+        <Contact />
+      </main>
 
-          <main>
-            <Hero onOpenArchive={openArchive} onOpenCv={openCv} />
-            <BlockchainLog />
-            <FullStackHistory />
-            <Projects />
-            <TechStack />
-            <CuyoConnect />
-            <Community />
-            <Academic />
-            <Contact />
-          </main>
+      <Footer />
+      <MobileBottomNav onOpenCv={openCv} />
 
-          <Footer />
-          <MobileBottomNav onOpenCv={openCv} />
+      <ArchiveModal open={archiveOpen} onClose={closeArchive} />
+      <NpmModal open={npmOpen} onClose={closeCv} />
+    </>
+  )
+}
 
-          <ArchiveModal open={archiveOpen} onClose={() => setArchiveOpen(false)} />
-          <NpmModal open={npmOpen} onClose={() => setNpmOpen(false)} />
-        </>
-      )}
-    </LanguageProvider>
+export default function App() {
+  return (
+    <MotionConfig reducedMotion="user">
+      <LanguageProvider>
+        <Portfolio />
+      </LanguageProvider>
+    </MotionConfig>
   )
 }

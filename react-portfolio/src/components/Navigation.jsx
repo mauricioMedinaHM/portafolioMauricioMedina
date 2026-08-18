@@ -1,36 +1,45 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
+import { useDialog } from '../hooks/useDialog'
+
+const EASE_OUT = [0.23, 1, 0.32, 1]
+const EASE_IN_OUT = [0.77, 0, 0.175, 1]
+
+const drawerLinkVariants = {
+  closed: { opacity: 0, x: 16, transition: { duration: 0.15, ease: EASE_IN_OUT } },
+  open: (i) => ({
+    opacity: 1,
+    x: 0,
+    transition: { delay: 0.08 + i * 0.035, duration: 0.3, ease: EASE_OUT },
+  }),
+}
 
 export default function Navigation({ onOpenCv }) {
   const { lang, setLang, t } = useLang()
   const [activeSection, setActiveSection] = useState('about')
   const [mobOpen, setMobOpen] = useState(false)
+  const drawerRef = useRef(null)
+  const panelRef = useRef(null)
+
+  const closeMob = useCallback(() => setMobOpen(false), [])
+  useDialog({ open: mobOpen, onClose: closeMob, containerRef: drawerRef, panelRef })
 
   useEffect(() => {
-    const sections = document.querySelectorAll('section[id]')
+    // Reading-line spy: a section is active when it crosses the optical middle band.
+    // Threshold-based ratios fail on sections taller than ~2x the viewport.
+    const ids = ['about', 'projects', 'stack', 'cuyoconnect']
     const obs = new IntersectionObserver(
       entries => {
         entries.forEach(e => {
           if (e.isIntersecting) setActiveSection(e.target.id)
         })
       },
-      { threshold: 0.4 }
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
     )
-    sections.forEach(s => obs.observe(s))
+    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el) })
     return () => obs.disconnect()
   }, [])
-
-  function toggleMob() {
-    setMobOpen(o => {
-      document.body.style.overflow = o ? '' : 'hidden'
-      return !o
-    })
-  }
-
-  function closeMob() {
-    setMobOpen(false)
-    document.body.style.overflow = ''
-  }
 
   const navLinks = [
     { href: '#about', key: 'nav_about' },
@@ -46,79 +55,83 @@ export default function Navigation({ onOpenCv }) {
         className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-6 py-3"
         style={{ background: 'rgba(0,0,0,.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(73,72,71,.2)' }}
       >
-        {/* Brand */}
         <div className="flex items-center gap-2.5">
-          <div className="font-label font-bold text-primary text-sm tracking-widest hidden md:block">
-            <span style={{ color: 'var(--tertiary)' }}>ROOT</span>@
-            <span style={{ color: '#adaaaa' }}>MauricioMedinaDev</span>:
-            <span style={{ color: 'var(--primary)' }}>~</span>&nbsp;
-            <span className="cursor-blink" style={{ height: '.8em', width: 7 }} />
-          </div>
-          <span className="font-label font-bold text-sm tracking-widest md:hidden" style={{ color: '#c19cff' }}>
-            Mauricio<span style={{ color: 'var(--tertiary)' }}>_dev</span>
+          <span className="font-label font-bold text-sm tracking-widest" style={{ color: '#c19cff' }}>
+            mauri.h.m
           </span>
         </div>
 
-        {/* Desktop links */}
         <div className="hidden md:flex gap-8">
-          {navLinks.map(link => (
-            <a
-              key={link.key}
-              className={`nav-link font-label text-sm text-on-surface-variant hover:text-primary transition-colors${activeSection === link.href.slice(1) ? ' active' : ''}`}
-              href={link.href}
-            >
-              {t[link.key]}
-            </a>
-          ))}
+          {navLinks.map(link => {
+            const isActive = activeSection === link.href.slice(1)
+            return (
+              <a
+                key={link.key}
+                className={`nav-link relative font-label text-sm text-on-surface-variant hover:text-primary transition-colors${isActive ? ' active' : ''}`}
+                href={link.href}
+              >
+                {t[link.key]}
+                {isActive && (
+                  <motion.span
+                    layoutId="nav-underline"
+                    transition={{ duration: 0.3, ease: EASE_OUT }}
+                    style={{ position: 'absolute', left: 0, right: 0, bottom: -6, height: 2, background: 'var(--primary)' }}
+                    aria-hidden="true"
+                  />
+                )}
+              </a>
+            )
+          })}
         </div>
 
         <div className="flex items-center gap-2 md:gap-3">
-          {/* Social icons — desktop */}
           <div className="hidden sm:flex gap-3 mr-2 items-center">
-            <a href="https://www.linkedin.com/in/mauricio-medina-dev/" target="_blank" rel="noreferrer">
+            <a href="https://www.linkedin.com/in/mauricio-medina-dev/" target="_blank" rel="noopener noreferrer" aria-label={t.a11y_linkedin}>
               <LinkedInIcon />
             </a>
             <SocialIcon
               href="https://www.instagram.com/mauri.h.m/"
               src="https://cdn.simpleicons.org/instagram/777575"
               hoverSrc="https://cdn.simpleicons.org/instagram/c19cff"
-              alt="Instagram"
+              alt={t.a11y_instagram}
             />
             <SocialIcon
               href="https://x.com/mauriHm_"
               src="https://cdn.simpleicons.org/x/777575"
               hoverSrc="https://cdn.simpleicons.org/x/c19cff"
-              alt="X"
+              alt={t.a11y_x}
             />
           </div>
 
-          {/* Lang toggle */}
-          <div className="flex">
-            <button className={`lang-btn${lang === 'es' ? ' active' : ''}`} onClick={() => setLang('es')}>ES</button>
-            <button className={`lang-btn${lang === 'en' ? ' active' : ''}`} onClick={() => setLang('en')}>EN</button>
+          <div className="lang-switch" role="group" aria-label={t.a11y_lang}>
+            <span className={`lang-switch-thumb${lang === 'en' ? ' en' : ''}`} aria-hidden="true" />
+            <button type="button" className={`lang-switch-opt${lang === 'es' ? ' active' : ''}`} aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</button>
+            <button type="button" className={`lang-switch-opt${lang === 'en' ? ' active' : ''}`} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
           </div>
 
-          {/* CV button */}
-          <button className="hidden md:block btn-primary" onClick={onOpenCv}>{t.nav_cv}</button>
+          <button type="button" className="hidden md:block btn-primary" onClick={onOpenCv}>{t.nav_cv}</button>
 
-          {/* Hamburger */}
           <button
+            type="button"
             className={`md:hidden flex flex-col gap-1.5 p-1.5 ml-1${mobOpen ? ' hb-open' : ''}`}
-            onClick={toggleMob}
-            aria-label="Menu"
+            onClick={() => setMobOpen(o => !o)}
+            aria-label={mobOpen ? t.a11y_menu_close : t.a11y_menu_open}
+            aria-expanded={mobOpen}
+            aria-controls="mob-drawer-panel"
           >
-            <span id="hb1" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} />
-            <span id="hb2" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} />
-            <span id="hb3" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} />
+            <span id="hb1" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} aria-hidden="true" />
+            <span id="hb2" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} aria-hidden="true" />
+            <span id="hb3" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} aria-hidden="true" />
           </button>
         </div>
       </nav>
 
-      {/* Mobile Drawer */}
       <div
+        ref={drawerRef}
         id="mob-drawer"
         className={`md:hidden fixed inset-0 z-[9990]${mobOpen ? ' open' : ''}`}
         style={{ pointerEvents: mobOpen ? 'auto' : 'none' }}
+        aria-hidden={!mobOpen}
       >
         <div
           id="mob-backdrop"
@@ -126,15 +139,20 @@ export default function Navigation({ onOpenCv }) {
           style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,.75)', backdropFilter: 'blur(4px)' }}
         />
         <div
+          ref={panelRef}
           id="mob-drawer-panel"
+          role="dialog"
+          aria-modal={mobOpen}
+          aria-label={t.a11y_menu_open}
+          tabIndex={-1}
           style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 'min(300px,88vw)', background: '#0e0e0e', borderLeft: '1px solid rgba(193,156,255,.18)', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}
         >
           <div style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(73,72,71,.25)' }}>
             <div className="flex items-center gap-2">
-              <img src="https://cdn.simpleicons.org/linux/c19cff" className="w-6 h-6" alt="Linux" />
-              <span className="font-label text-sm font-bold" style={{ color: '#c19cff' }}>Mauricio<span style={{ color: 'var(--tertiary)' }}>_dev</span></span>
+              <img src="https://cdn.simpleicons.org/linux/c19cff" className="w-6 h-6" alt="" />
+              <span className="font-label text-sm font-bold" style={{ color: '#c19cff' }}>mauri.h.m</span>
             </div>
-            <button onClick={closeMob} style={{ background: 'none', border: 'none', color: '#494847', fontSize: 20, cursor: 'pointer' }}>✕</button>
+            <button type="button" onClick={closeMob} aria-label={t.a11y_close} style={{ background: 'none', border: 'none', color: '#adaaaa', fontSize: 20, cursor: 'pointer' }}>✕</button>
           </div>
           <nav style={{ padding: '8px 0', flex: 1 }}>
             {[
@@ -143,26 +161,30 @@ export default function Navigation({ onOpenCv }) {
               { href: '#experience', label: 'Blockchain', icon: 'grid' },
               { href: '#stack', label: t.nav_stack, icon: 'list' },
               { href: '#cuyoconnect', label: t.nav_cuyo, icon: 'people' },
-              { href: '#contact', label: 'Contacto', icon: 'mail' },
-            ].map(item => (
-              <a
+              { href: '#contact', label: t.nav_contact, icon: 'mail' },
+            ].map((item, i) => (
+              <motion.a
                 key={item.href}
                 href={item.href}
                 onClick={closeMob}
+                custom={i}
+                variants={drawerLinkVariants}
+                initial="closed"
+                animate={mobOpen ? 'open' : 'closed'}
                 className="flex items-center gap-3 px-6 py-4 font-label text-sm hover:text-primary transition-colors border-b border-outline-variant/10"
                 style={{ color: '#adaaaa' }}
               >
                 <NavMobileIcon type={item.icon} />
                 {item.label}
-              </a>
+              </motion.a>
             ))}
           </nav>
           <div style={{ padding: 20, borderTop: '1px solid rgba(73,72,71,.25)', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <button className="btn-primary w-full" style={{ textAlign: 'center' }} onClick={() => { onOpenCv(); closeMob() }}>{t.nav_cv}</button>
+            <button type="button" className="btn-primary w-full" style={{ textAlign: 'center' }} onClick={() => { onOpenCv(); closeMob() }}>{t.nav_cv}</button>
             <div style={{ display: 'flex', gap: 16, justifyContent: 'center', paddingTop: 8 }}>
-              <a href="https://www.linkedin.com/in/mauricio-medina-dev/" target="_blank" rel="noreferrer"><LinkedInIcon size={20} /></a>
-              <SocialIcon href="https://www.instagram.com/mauri.h.m/" src="https://cdn.simpleicons.org/instagram/777575" hoverSrc="https://cdn.simpleicons.org/instagram/c19cff" alt="Instagram" size={20} />
-              <SocialIcon href="https://x.com/mauriHm_" src="https://cdn.simpleicons.org/x/777575" hoverSrc="https://cdn.simpleicons.org/x/c19cff" alt="X" size={20} />
+              <a href="https://www.linkedin.com/in/mauricio-medina-dev/" target="_blank" rel="noopener noreferrer" aria-label={t.a11y_linkedin}><LinkedInIcon size={20} /></a>
+              <SocialIcon href="https://www.instagram.com/mauri.h.m/" src="https://cdn.simpleicons.org/instagram/777575" hoverSrc="https://cdn.simpleicons.org/instagram/c19cff" alt={t.a11y_instagram} size={20} />
+              <SocialIcon href="https://x.com/mauriHm_" src="https://cdn.simpleicons.org/x/777575" hoverSrc="https://cdn.simpleicons.org/x/c19cff" alt={t.a11y_x} size={20} />
             </div>
           </div>
         </div>
@@ -174,12 +196,12 @@ export default function Navigation({ onOpenCv }) {
 function SocialIcon({ href, src, hoverSrc, alt, size = 16 }) {
   const [hover, setHover] = useState(false)
   return (
-    <a href={href} target="_blank" rel="noreferrer">
+    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={alt}>
       <img
         src={hover ? hoverSrc : src}
-        className={`transition-all`}
+        className="transition-all"
         style={{ width: size, height: size, opacity: hover ? 1 : 0.7 }}
-        alt={alt}
+        alt=""
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       />
@@ -191,7 +213,8 @@ function LinkedInIcon({ size = 16 }) {
   const [hover, setHover] = useState(false)
   return (
     <svg
-      style={{ width: size, height: size, fill: hover ? '#c19cff' : '#777575', opacity: hover ? 1 : 0.7, transition: 'fill .2s,opacity .2s' }}
+      aria-hidden="true"
+      style={{ width: size, height: size, fill: hover ? '#c19cff' : '#adaaaa', opacity: hover ? 1 : 0.7, transition: 'fill .2s,opacity .2s' }}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
       viewBox="0 0 24 24"
@@ -201,10 +224,9 @@ function LinkedInIcon({ size = 16 }) {
   )
 }
 
-
 function NavMobileIcon({ type }) {
   const style = { width: 16, height: 16, flexShrink: 0, color: '#9146ff' }
-  const props = { fill: 'none', stroke: 'currentColor', strokeWidth: 2, viewBox: '0 0 24 24', style }
+  const props = { fill: 'none', stroke: 'currentColor', strokeWidth: 2, viewBox: '0 0 24 24', style, 'aria-hidden': true }
   if (type === 'person') return <svg {...props}><path strokeLinecap="square" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
   if (type === 'folder') return <svg {...props}><path strokeLinecap="square" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
   if (type === 'grid') return <svg {...props}><path strokeLinecap="square" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" /></svg>

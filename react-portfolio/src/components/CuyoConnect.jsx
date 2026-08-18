@@ -25,8 +25,7 @@ export default function CuyoConnect() {
                 <h2 className="font-headline text-4xl md:text-5xl font-bold text-on-surface uppercase">CuyoConnect</h2>
               </div>
               <p className="font-label text-xs text-primary uppercase tracking-widest mb-6">{t.cuyo_tagline}</p>
-              <p className="text-secondary font-body text-base leading-relaxed mb-4">{t.cuyo_desc1}</p>
-              <p className="text-on-surface-variant font-body text-sm leading-relaxed mb-8">{t.cuyo_desc2}</p>
+              <p className="text-secondary font-body text-base leading-relaxed mb-8">{t.cuyo_desc1}</p>
               <a href="https://cuyoconnect.com/" target="_blank" rel="noreferrer" className="flex items-center gap-2 text-primary font-label text-sm group w-fit">
                 <span>{t.cuyo_cta}</span>
                 <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -41,19 +40,11 @@ export default function CuyoConnect() {
                 <p className="font-label text-xs text-outline uppercase mt-1">{t.cuyo_members}</p>
               </div>
               <div className="border border-outline-variant/10 p-6 card-hover" style={{ background: '#1a1919' }}>
-                <p className="font-label text-2xl font-bold text-primary">12</p>
+                <p className="font-label text-2xl font-bold text-primary">5</p>
                 <p className="font-label text-xs text-outline uppercase mt-1">{t.cuyo_hackathons}</p>
               </div>
               <div className="col-span-2 p-6" style={{ background: '#201f1f' }}>
                 <p className="text-on-surface font-body text-sm italic leading-relaxed">{t.cuyo_quote}</p>
-              </div>
-              <div className="border border-outline-variant/10 p-4 card-hover" style={{ background: '#1a1919' }}>
-                <p className="font-label text-xs text-outline uppercase">{t.cuyo_loc_label}</p>
-                <p className="font-label text-sm text-on-surface mt-1">Mendoza, ARG</p>
-              </div>
-              <div className="border border-tertiary/20 p-4 card-hover" style={{ background: '#1a1919' }}>
-                <p className="font-label text-xs text-outline uppercase">Focus</p>
-                <p className="font-label text-sm text-tertiary mt-1">LATAM Web3</p>
               </div>
             </div>
           </div>

@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
+import { motion } from 'motion/react'
 
 export default function MobileBottomNav({ onOpenCv }) {
   const [active, setActive] = useState('about')
 
   useEffect(() => {
+    // Reading-line spy: active = section crossing the optical middle band.
     const sections = ['about', 'projects', 'stack', 'contact']
     const obs = new IntersectionObserver(
       entries => {
         entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id) })
       },
-      { threshold: 0.4 }
+      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
     )
     sections.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el) })
     return () => obs.disconnect()
@@ -46,11 +48,13 @@ export default function MobileBottomNav({ onOpenCv }) {
           return (
             <div key="cv" className="flex flex-col items-center gap-1 py-1 px-3 flex-1">
               <button
+                type="button"
                 onClick={onOpenCv}
+                aria-label="Descargar CV"
+                className="btn-cv-fab"
                 style={{ width: 42, height: 42, background: 'linear-gradient(135deg,#9146ff,#c19cff)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                title="Descargar CV"
               >
-                <svg className="w-5 h-5" fill="none" stroke="#1a0040" strokeWidth="2.2" viewBox="0 0 24 24">
+                <svg className="w-5 h-5" fill="none" stroke="#1a0040" strokeWidth="2.2" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="square" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
               </button>
@@ -63,10 +67,19 @@ export default function MobileBottomNav({ onOpenCv }) {
             key={tab.href}
             href={tab.href}
             onClick={() => setActive(tab.href.slice(1))}
-            className="flex flex-col items-center gap-1 py-2 px-3 flex-1"
+            aria-current={isActive ? 'page' : undefined}
+            className="relative flex flex-col items-center gap-1 py-2 px-3 flex-1"
           >
-            <span style={{ color: isActive ? '#c19cff' : '#494847', transition: 'color .2s' }}>{tab.icon}</span>
-            <span className="font-label" style={{ fontSize: 9, color: isActive ? '#c19cff' : '#494847', letterSpacing: '.06em', transition: 'color .2s' }}>{tab.label}</span>
+            {isActive && (
+              <motion.span
+                layoutId="mob-tab-indicator"
+                transition={{ duration: 0.28, ease: [0.23, 1, 0.32, 1] }}
+                style={{ position: 'absolute', top: 0, left: '22%', right: '22%', height: 2, background: 'var(--primary)' }}
+                aria-hidden="true"
+              />
+            )}
+            <span style={{ color: isActive ? '#c19cff' : '#9c9a99', transition: 'color .2s' }} aria-hidden="true">{tab.icon}</span>
+            <span className="font-label" style={{ fontSize: 11, color: isActive ? '#c19cff' : '#9c9a99', letterSpacing: '.06em', transition: 'color .2s' }}>{tab.label}</span>
           </a>
         )
       })}

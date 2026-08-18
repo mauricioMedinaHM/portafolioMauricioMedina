@@ -14,7 +14,7 @@ export default {
         'surface-container-highest': '#262626',
         'secondary-container': '#474646',
         'on-primary': '#3f0085',
-        'outline': '#777575',
+        'outline': '#adaaaa',
         'primary-container': '#b68aff',
         'tertiary': '#9cff93',
         'secondary': '#e5e2e1',
