@@ -8,8 +8,8 @@ const sizes = {
 }
 
 const colors = {
-  brand: 'text-primary bg-[rgba(193,156,255,0.08)] ring-primary/25',
-  success: 'text-tertiary bg-[rgba(156,255,147,0.08)] ring-tertiary/25',
+  brand: 'text-on-surface bg-[#fdda24] ring-[#fdda24]',
+  success: 'text-[#00a7b5] bg-[rgba(0,167,181,0.12)] ring-[#00a7b5]/25',
   gray: 'text-on-surface-variant bg-surface-container-highest ring-outline-variant/40',
 }
 
@@ -25,7 +25,7 @@ export function FeaturedIcon({
     <div
       data-featured-icon
       className={cx(
-        'relative flex shrink-0 items-center justify-center ring-1 ring-inset',
+        'relative flex shrink-0 items-center justify-center ring-1 ring-inset rounded-[4px]',
         sizes[size],
         colors[color],
         className,

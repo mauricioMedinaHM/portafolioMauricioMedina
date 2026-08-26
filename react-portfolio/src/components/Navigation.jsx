@@ -1,237 +1,110 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
-import { motion } from 'motion/react'
+import { useState, useEffect } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
-import { useDialog } from '../hooks/useDialog'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 const EASE_OUT = [0.23, 1, 0.32, 1]
-const EASE_IN_OUT = [0.77, 0, 0.175, 1]
+const TALK_URL = 'https://www.linkedin.com/in/mauricio-medina-dev/'
 
-const drawerLinkVariants = {
-  closed: { opacity: 0, x: 16, transition: { duration: 0.15, ease: EASE_IN_OUT } },
-  open: (i) => ({
-    opacity: 1,
-    x: 0,
-    transition: { delay: 0.08 + i * 0.035, duration: 0.3, ease: EASE_OUT },
-  }),
+const SECTION_LABELS = {
+  about: 'nav_about',
+  stack: 'nav_stack',
+  experience: 'nav_experience',
+  projects: 'nav_projects',
+  cuyoconnect: 'nav_cuyo',
+  community: 'community_title',
+  academic: 'academic_title',
+  contact: 'nav_contact',
 }
 
 export default function Navigation({ onOpenCv }) {
   const { lang, setLang, t } = useLang()
+  const reduced = usePrefersReducedMotion()
   const [activeSection, setActiveSection] = useState('about')
-  const [mobOpen, setMobOpen] = useState(false)
-  const drawerRef = useRef(null)
-  const panelRef = useRef(null)
-
-  const closeMob = useCallback(() => setMobOpen(false), [])
-  useDialog({ open: mobOpen, onClose: closeMob, containerRef: drawerRef, panelRef })
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    // Reading-line spy: a section is active when it crosses the optical middle band.
-    // Threshold-based ratios fail on sections taller than ~2x the viewport.
-    const ids = ['about', 'projects', 'stack', 'cuyoconnect']
-    const obs = new IntersectionObserver(
-      entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting) setActiveSection(e.target.id)
-        })
-      },
-      { rootMargin: '-40% 0px -55% 0px', threshold: 0 }
-    )
-    ids.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el) })
-    return () => obs.disconnect()
+    const ids = Object.keys(SECTION_LABELS)
+    let ticking = false
+
+    const update = () => {
+      ticking = false
+      setScrolled(window.scrollY > 8)
+      const line = 56
+      let current = 'about'
+      ids.forEach((id) => {
+        const el = document.getElementById(id)
+        if (!el) return
+        if (el.getBoundingClientRect().top - line <= 0) current = id
+      })
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+      if (maxScroll > 0 && window.scrollY >= maxScroll - 12) {
+        current = ids[ids.length - 1]
+      }
+      setActiveSection(current)
+    }
+
+    const onScroll = () => {
+      if (ticking) return
+      ticking = true
+      requestAnimationFrame(update)
+    }
+
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+    }
   }, [])
 
-  const navLinks = [
-    { href: '#about', key: 'nav_about' },
-    { href: '#projects', key: 'nav_projects' },
-    { href: '#stack', key: 'nav_stack' },
-    { href: '#cuyoconnect', key: 'nav_cuyo' },
-  ]
+  const sectionKey = SECTION_LABELS[activeSection] || 'nav_about'
+  const showSection = activeSection !== 'about'
 
   return (
-    <>
-      <nav
-        id="main-nav"
-        className="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 md:px-6 py-3"
-        style={{ background: 'rgba(0,0,0,.95)', backdropFilter: 'blur(20px)', borderBottom: '1px solid rgba(73,72,71,.2)' }}
-      >
-        <div className="flex items-center gap-2.5">
-          <span className="font-label font-bold text-sm tracking-widest" style={{ color: '#c19cff' }}>
-            mauri.h.m
-          </span>
+    <nav id="main-nav" className={`city-nav${scrolled ? ' is-scrolled' : ''}`}>
+      <a href="#about" className="city-wordmark">mauri.h.m</a>
+
+      <div className="city-nav-now" aria-live="polite">
+        <AnimatePresence mode="wait" initial={false}>
+          {showSection && (
+            <motion.span
+              key={activeSection}
+              className="city-nav-section"
+              initial={reduced ? false : { opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={reduced ? { opacity: 0 } : { opacity: 0, y: -5 }}
+              transition={{ duration: reduced ? 0 : 0.12, ease: EASE_OUT }}
+            >
+              {t[sectionKey]}
+            </motion.span>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <div className="flex items-center gap-2 md:gap-3">
+        <div className="lang-switch" role="group" aria-label={t.a11y_lang}>
+          <button type="button" className={`lang-switch-opt${lang === 'es' ? ' active' : ''}`} aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</button>
+          <span className="lang-switch-sep" aria-hidden="true">/</span>
+          <button type="button" className={`lang-switch-opt${lang === 'en' ? ' active' : ''}`} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
         </div>
 
-        <div className="hidden md:flex gap-8">
-          {navLinks.map(link => {
-            const isActive = activeSection === link.href.slice(1)
-            return (
-              <a
-                key={link.key}
-                className={`nav-link relative font-label text-sm text-on-surface-variant hover:text-primary transition-colors${isActive ? ' active' : ''}`}
-                href={link.href}
-              >
-                {t[link.key]}
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-underline"
-                    transition={{ duration: 0.3, ease: EASE_OUT }}
-                    style={{ position: 'absolute', left: 0, right: 0, bottom: -6, height: 2, background: 'var(--primary)' }}
-                    aria-hidden="true"
-                  />
-                )}
-              </a>
-            )
-          })}
-        </div>
-
-        <div className="flex items-center gap-2 md:gap-3">
-          <div className="hidden sm:flex gap-3 mr-2 items-center">
-            <a href="https://www.linkedin.com/in/mauricio-medina-dev/" target="_blank" rel="noopener noreferrer" aria-label={t.a11y_linkedin}>
-              <LinkedInIcon />
-            </a>
-            <SocialIcon
-              href="https://www.instagram.com/mauri.h.m/"
-              src="https://cdn.simpleicons.org/instagram/777575"
-              hoverSrc="https://cdn.simpleicons.org/instagram/c19cff"
-              alt={t.a11y_instagram}
-            />
-            <SocialIcon
-              href="https://x.com/mauriHm_"
-              src="https://cdn.simpleicons.org/x/777575"
-              hoverSrc="https://cdn.simpleicons.org/x/c19cff"
-              alt={t.a11y_x}
-            />
-          </div>
-
-          <div className="lang-switch" role="group" aria-label={t.a11y_lang}>
-            <span className={`lang-switch-thumb${lang === 'en' ? ' en' : ''}`} aria-hidden="true" />
-            <button type="button" className={`lang-switch-opt${lang === 'es' ? ' active' : ''}`} aria-pressed={lang === 'es'} onClick={() => setLang('es')}>ES</button>
-            <button type="button" className={`lang-switch-opt${lang === 'en' ? ' active' : ''}`} aria-pressed={lang === 'en'} onClick={() => setLang('en')}>EN</button>
-          </div>
-
-          <button type="button" className="hidden md:block btn-primary" onClick={onOpenCv}>{t.nav_cv}</button>
-
-          <button
-            type="button"
-            className={`md:hidden flex flex-col gap-1.5 p-1.5 ml-1${mobOpen ? ' hb-open' : ''}`}
-            onClick={() => setMobOpen(o => !o)}
-            aria-label={mobOpen ? t.a11y_menu_close : t.a11y_menu_open}
-            aria-expanded={mobOpen}
-            aria-controls="mob-drawer-panel"
-          >
-            <span id="hb1" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} aria-hidden="true" />
-            <span id="hb2" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} aria-hidden="true" />
-            <span id="hb3" className="block w-5 h-0.5 transition-all duration-300" style={{ background: '#c19cff' }} aria-hidden="true" />
+        <div className="city-nav-actions">
+          <button type="button" className="nav-cv-quiet" onClick={onOpenCv}>
+            {t.nav_cv}
           </button>
-        </div>
-      </nav>
-
-      <div
-        ref={drawerRef}
-        id="mob-drawer"
-        className={`md:hidden fixed inset-0 z-[9990]${mobOpen ? ' open' : ''}`}
-        style={{ pointerEvents: mobOpen ? 'auto' : 'none' }}
-        aria-hidden={!mobOpen}
-      >
-        <div
-          id="mob-backdrop"
-          onClick={closeMob}
-          style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,.75)', backdropFilter: 'blur(4px)' }}
-        />
-        <div
-          ref={panelRef}
-          id="mob-drawer-panel"
-          role="dialog"
-          aria-modal={mobOpen}
-          aria-label={t.a11y_menu_open}
-          tabIndex={-1}
-          style={{ position: 'absolute', right: 0, top: 0, bottom: 0, width: 'min(300px,88vw)', background: '#0e0e0e', borderLeft: '1px solid rgba(193,156,255,.18)', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}
-        >
-          <div style={{ padding: '20px 20px 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(73,72,71,.25)' }}>
-            <div className="flex items-center gap-2">
-              <img src="https://cdn.simpleicons.org/linux/c19cff" className="w-6 h-6" alt="" />
-              <span className="font-label text-sm font-bold" style={{ color: '#c19cff' }}>mauri.h.m</span>
-            </div>
-            <button type="button" onClick={closeMob} aria-label={t.a11y_close} style={{ background: 'none', border: 'none', color: '#adaaaa', fontSize: 20, cursor: 'pointer' }}>✕</button>
-          </div>
-          <nav style={{ padding: '8px 0', flex: 1 }}>
-            {[
-              { href: '#about', label: t.nav_about, icon: 'person' },
-              { href: '#projects', label: t.nav_projects, icon: 'folder' },
-              { href: '#experience', label: 'Blockchain', icon: 'grid' },
-              { href: '#stack', label: t.nav_stack, icon: 'list' },
-              { href: '#cuyoconnect', label: t.nav_cuyo, icon: 'people' },
-              { href: '#contact', label: t.nav_contact, icon: 'mail' },
-            ].map((item, i) => (
-              <motion.a
-                key={item.href}
-                href={item.href}
-                onClick={closeMob}
-                custom={i}
-                variants={drawerLinkVariants}
-                initial="closed"
-                animate={mobOpen ? 'open' : 'closed'}
-                className="flex items-center gap-3 px-6 py-4 font-label text-sm hover:text-primary transition-colors border-b border-outline-variant/10"
-                style={{ color: '#adaaaa' }}
-              >
-                <NavMobileIcon type={item.icon} />
-                {item.label}
-              </motion.a>
-            ))}
-          </nav>
-          <div style={{ padding: 20, borderTop: '1px solid rgba(73,72,71,.25)', display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <button type="button" className="btn-primary w-full" style={{ textAlign: 'center' }} onClick={() => { onOpenCv(); closeMob() }}>{t.nav_cv}</button>
-            <div style={{ display: 'flex', gap: 16, justifyContent: 'center', paddingTop: 8 }}>
-              <a href="https://www.linkedin.com/in/mauricio-medina-dev/" target="_blank" rel="noopener noreferrer" aria-label={t.a11y_linkedin}><LinkedInIcon size={20} /></a>
-              <SocialIcon href="https://www.instagram.com/mauri.h.m/" src="https://cdn.simpleicons.org/instagram/777575" hoverSrc="https://cdn.simpleicons.org/instagram/c19cff" alt={t.a11y_instagram} size={20} />
-              <SocialIcon href="https://x.com/mauriHm_" src="https://cdn.simpleicons.org/x/777575" hoverSrc="https://cdn.simpleicons.org/x/c19cff" alt={t.a11y_x} size={20} />
-            </div>
-          </div>
+          <a
+            href={TALK_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn-primary city-nav-cta"
+          >
+            {t.hero_btn_talk}
+            <span aria-hidden="true"> →</span>
+          </a>
         </div>
       </div>
-    </>
+    </nav>
   )
-}
-
-function SocialIcon({ href, src, hoverSrc, alt, size = 16 }) {
-  const [hover, setHover] = useState(false)
-  return (
-    <a href={href} target="_blank" rel="noopener noreferrer" aria-label={alt}>
-      <img
-        src={hover ? hoverSrc : src}
-        className="transition-all"
-        style={{ width: size, height: size, opacity: hover ? 1 : 0.7 }}
-        alt=""
-        onMouseEnter={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
-      />
-    </a>
-  )
-}
-
-function LinkedInIcon({ size = 16 }) {
-  const [hover, setHover] = useState(false)
-  return (
-    <svg
-      aria-hidden="true"
-      style={{ width: size, height: size, fill: hover ? '#c19cff' : '#adaaaa', opacity: hover ? 1 : 0.7, transition: 'fill .2s,opacity .2s' }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      viewBox="0 0 24 24"
-    >
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
-  )
-}
-
-function NavMobileIcon({ type }) {
-  const style = { width: 16, height: 16, flexShrink: 0, color: '#9146ff' }
-  const props = { fill: 'none', stroke: 'currentColor', strokeWidth: 2, viewBox: '0 0 24 24', style, 'aria-hidden': true }
-  if (type === 'person') return <svg {...props}><path strokeLinecap="square" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-  if (type === 'folder') return <svg {...props}><path strokeLinecap="square" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
-  if (type === 'grid') return <svg {...props}><path strokeLinecap="square" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" /></svg>
-  if (type === 'list') return <svg {...props}><path strokeLinecap="square" d="M5 12h14M5 6h14M5 18h14" /></svg>
-  if (type === 'people') return <svg {...props}><path strokeLinecap="square" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0" /></svg>
-  if (type === 'mail') return <svg {...props}><path strokeLinecap="square" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-  return null
 }

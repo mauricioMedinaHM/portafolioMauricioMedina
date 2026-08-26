@@ -1,6 +1,17 @@
 export const PROJECTS = [
   {
     tag: 'web3',
+    title: 'human',
+    desc: {
+      es: 'Plataforma de identidad con zero-knowledge (proof of personhood) sobre Stellar/Soroban. Demo pública en testnet: contratos, APIs y web.',
+      en: 'Zero-knowledge identity platform (proof of personhood) on Stellar/Soroban. Public testnet demo: contracts, APIs, and web.',
+    },
+    stack: ['Soroban', 'Rust', 'React', 'TypeScript', 'ZK'],
+    url: 'https://human-web-psi.vercel.app/',
+    color: '#0f0f0f',
+  },
+  {
+    tag: 'web3',
     title: 'Lotty',
     desc: {
       es: 'dApp de lotería descentralizada en Stellar. 1er lugar en el hackathon blockchain profesional de Buenos Aires 2025. Smart contracts en Soroban + React frontend.',
@@ -8,7 +19,7 @@ export const PROJECTS = [
     },
     stack: ['Soroban', 'Rust', 'React', 'Stellar SDK'],
     url: 'https://lotty-stellar.vercel.app/',
-    color: '#c19cff',
+    color: '#0f0f0f',
   },
   {
     tag: 'web3',
@@ -19,7 +30,7 @@ export const PROJECTS = [
     },
     stack: ['Next.js', 'TypeScript', 'React'],
     url: 'https://cuyoconnect.com/',
-    color: '#9146ff',
+    color: '#00a7b5',
   },
   {
     tag: 'web2',
@@ -30,7 +41,7 @@ export const PROJECTS = [
     },
     stack: ['React', 'Next.js', 'TypeScript', 'Vercel'],
     url: 'https://www.apuntesuda.com/',
-    color: '#c19cff',
+    color: '#0f0f0f',
   },
   {
     tag: 'web2',
@@ -63,7 +74,7 @@ export const PROJECTS = [
     },
     stack: ['WordPress'],
     url: 'https://manzanohistoricoexcursions.com/',
-    color: '#c19cff',
+    color: '#0f0f0f',
   },
   {
     tag: 'web2',
@@ -74,7 +85,7 @@ export const PROJECTS = [
     },
     stack: ['WordPress'],
     url: 'https://empoderate.com.ar/',
-    color: '#c19cff',
+    color: '#0f0f0f',
   },
   {
     tag: 'web2',
@@ -86,5 +97,16 @@ export const PROJECTS = [
     stack: ['Next.js', 'TypeScript', 'Node.js', 'AWS', 'Docker'],
     url: '#',
     color: '#9cff93',
+  },
+  {
+    tag: 'web2',
+    title: 'Campus Downloader',
+    desc: {
+      es: 'Extensión de Chrome para descarga masiva de archivos desde Moodle universitario. JavaScript y Chrome Extension APIs.',
+      en: 'Chrome extension for bulk downloads from university Moodle. JavaScript and Chrome Extension APIs.',
+    },
+    stack: ['JavaScript', 'Chrome Extensions'],
+    url: '#',
+    color: '#0f0f0f',
   },
 ]

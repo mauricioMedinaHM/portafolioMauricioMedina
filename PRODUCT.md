@@ -10,11 +10,11 @@ Technical evaluators: CTOs, engineering leads, and senior developers assessing a
 
 ## Product Purpose
 
-Mauricio Medina's personal portfolio. Communicates full-stack Web3 expertise (Rust, Stellar/Soroban, React, Node.js) through a terminal-aesthetic dark interface that itself demonstrates technical taste and craft. Success = a CTO reads the page and immediately understands what Mauricio builds, trusts his depth, and wants to talk.
+Mauricio Medina's personal portfolio. Communicates full-stack Web3 expertise (Rust, Stellar/Soroban, React, Node.js) through a night-city interface that itself demonstrates technical taste and craft. Success = a CTO reads the page and immediately understands what Mauricio builds, trusts his depth, and wants to talk.
 
 ## Brand Personality
 
-Técnico, oscuro, preciso. The interface behaves like production code: no excess, no performance, everything intentional. The darkness is not decoration — it's the natural habitat of someone who ships at 2am. Precision means every element earns its place.
+Técnico, oscuro, preciso. The interface behaves like production code: no excess, no performance, everything intentional. The darkness is a rainy night city — wet glass, sodium lamps, one lit window — not a terminal costume. Precision means every element earns its place.
 
 ## Anti-references
 
@@ -25,7 +25,7 @@ Técnico, oscuro, preciso. The interface behaves like production code: no excess
 ## Design Principles
 
 1. **Signal over spectacle.** Every animation and visual choice must help a CTO extract information faster, not slower. Motion earns its place by aiding comprehension, not by impressing.
-2. **Terminal aesthetic as native habitat.** The dark, monospace, low-chrome interface is not a costume — it is the authentic environment of the work. It should feel lived-in, not dressed up.
+2. **Night city as native habitat.** The dark, rain-on-glass, low-chrome interface is not a costume — it is the authentic environment of the work. It should feel lived-in, not dressed up.
 3. **Precision compounds.** Details a visitor never consciously notices (easing curves, spacing rhythm, typographic hierarchy) accumulate into an impression of someone who ships quality. Sloppiness in the interface implies sloppiness in the code.
 4. **Depth on demand.** Surface reads fast (name, role, key projects, contact). Depth is available for those who want it (full archive, blockchain log, academic section). Never bury the lead.
 5. **Own the niche.** This is not a general dev portfolio — it is a Web3/Rust/Stellar portfolio. Every section should reinforce that specialization rather than diluting it with generic claims.
