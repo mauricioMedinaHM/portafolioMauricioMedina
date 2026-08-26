@@ -5,6 +5,7 @@ import { staggerContainer, staggerItem, viewportOnce } from '../hooks/useScrollR
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 const slides = [
+  { src: '/img/carrusel/Binance University Tour.webp', label: 'binance_university_tour.webp', caption: 'Binance University Tour — Universidad del Aconcagua · Mendoza, ARG', fit: 'contain' },
   { src: '/img/carrusel/Cuyo_Connet_016.webp', label: 'cuyo_connect_016.webp', caption: 'CuyoConnect — Comunidad Web3 · Mendoza, ARG' },
   { src: '/img/carrusel/CharlaInitroWEb3.webp', label: 'charla_web3.webp', caption: 'Charla — Intro a Web3 · Charla presencial' },
   { src: '/img/carrusel/mento.webp', label: 'mentoring.webp', caption: 'Mentoring — Guiando nuevos devs' },
@@ -108,7 +109,7 @@ export default function Community() {
                   className={`carousel-slide${i === current ? ' is-active' : ''}`}
                   aria-hidden={i !== current}
                 >
-                  <img src={s.src} alt={i === current ? s.caption : ''} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
+                  <img src={s.src} alt={i === current ? s.caption : ''} style={{ width: '100%', height: '100%', objectFit: s.fit || 'cover', objectPosition: s.fit === 'contain' ? 'center' : 'center top' }} />
                 </div>
               ))}
             </div>
