@@ -1,14 +1,29 @@
 import { motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
+import { EASE_OUT } from '../lib/motion'
 import BlurText from './ui/BlurText'
 import HeroCycleMark from './ui/HeroCycleMark'
 import SocialLinks from './SocialLinks'
 
-const EASE_OUT = [0.23, 1, 0.32, 1]
 const TALK_URL = 'https://www.linkedin.com/in/mauricio-medina-dev/'
 
-export default function Hero({ onOpenCv }) {
+const heroStagger = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.07, delayChildren: 0.02 } },
+}
+
+const heroCopy = {
+  hidden: { opacity: 0, y: 8 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.42, ease: EASE_OUT } },
+}
+
+const heroPortrait = {
+  hidden: { opacity: 0, transform: 'scale(0.97)' },
+  visible: { opacity: 1, transform: 'scale(1)', transition: { duration: 0.5, ease: EASE_OUT } },
+}
+
+export default function Hero() {
   const { t } = useLang()
   const reduced = usePrefersReducedMotion()
   const words = t.hero_cycle
@@ -17,20 +32,20 @@ export default function Hero({ onOpenCv }) {
     <section id="about" className="hero-section">
       <motion.div
         className="hero-grid"
-        initial={reduced ? false : { opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: EASE_OUT }}
+        initial={reduced ? false : 'hidden'}
+        animate="visible"
+        variants={heroStagger}
       >
-        <div className="hero-intro">
+        <motion.div className="hero-intro" variants={reduced ? undefined : heroCopy}>
           <h1 className="hero-name">
             <span className="hero-name-line">
               <BlurText
                 text="Mauricio Medina"
                 animateBy="letter"
                 delay={0.04}
-                segmentDelay={0.032}
-                duration={0.42}
-                blurAmount={6}
+                segmentDelay={0.028}
+                duration={0.38}
+                blurAmount={4}
               />
             </span>
             <span className="hero-name-line">
@@ -40,18 +55,19 @@ export default function Hero({ onOpenCv }) {
           <p className="hero-role">{t.hero_role}</p>
           <p className="hero-founder">{t.hero_founder}</p>
           <p className="hero-loc">{t.hero_block_loc}</p>
-        </div>
-        <img
+        </motion.div>
+        <motion.img
           className="hero-portrait"
           src="/img/FOTOPERFIL.webp"
           alt="Mauricio Medina"
           width="640"
           height="640"
           decoding="async"
+          variants={reduced ? undefined : heroPortrait}
         />
-        <div className="hero-rest">
+        <motion.div className="hero-rest" variants={reduced ? undefined : heroCopy}>
           <p className="hero-desc">{t.hero_desc_plain}</p>
-          <SocialLinks t={t} />
+          <SocialLinks t={t} withCv />
           <div className="hero-actions">
             <a
               href={TALK_URL}
@@ -62,11 +78,8 @@ export default function Hero({ onOpenCv }) {
               {t.hero_btn_talk}
               <span aria-hidden="true"> →</span>
             </a>
-            <button type="button" className="btn-ghost" onClick={onOpenCv}>
-              {t.hero_btn_cv}
-            </button>
           </div>
-        </div>
+        </motion.div>
       </motion.div>
     </section>
   )

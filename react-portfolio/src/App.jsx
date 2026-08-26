@@ -32,7 +32,7 @@ function Portfolio() {
       <MobileBottomNav />
 
       <main id="main-content">
-        <Hero onOpenCv={openCv} />
+        <Hero />
         <TechStack />
         <BlockchainLog />
         <Projects onOpenArchive={openArchive} />
@@ -52,7 +52,7 @@ function Portfolio() {
 
 export default function App() {
   return (
-    <MotionConfig reducedMotion="user">
+    <MotionConfig reducedMotion="user" transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}>
       <LanguageProvider>
         <Portfolio />
       </LanguageProvider>

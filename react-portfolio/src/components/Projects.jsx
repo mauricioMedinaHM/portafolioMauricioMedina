@@ -116,15 +116,12 @@ export default function Projects({ onOpenArchive }) {
           <ExperienceLog entries={FULLSTACK} labelledBy="projects-fullstack" />
         </div>
 
-        <motion.div
-          variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-          className="mt-12 flex justify-start"
-        >
+        <div className="mt-12 flex justify-start">
           <button type="button" className="btn-ghost inline-flex items-center gap-2" onClick={onOpenArchive}>
             <Folder className="h-4 w-4 flex-shrink-0" aria-hidden="true" />
             {t.hero_btn_archive}
           </button>
-        </motion.div>
+        </div>
       </div>
     </section>
   )

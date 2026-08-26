@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react'
 import { useLang } from '../../context/LanguageContext'
 import { PROJECTS } from '../../data/projects'
 import { useDialog } from '../../hooks/useDialog'
+import { EASE_OUT, modalPanel, overlayExit, overlayTransition } from '../../lib/motion'
 
 export default function ArchiveModal({ open, onClose }) {
   const { lang, t } = useLang()
@@ -20,20 +21,21 @@ export default function ArchiveModal({ open, onClose }) {
         <motion.div
           key="archive-root"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          animate={{ opacity: 1, transition: overlayTransition }}
+          exit={{ opacity: 0, transition: overlayExit }}
           style={{ position: 'fixed', inset: 0, zIndex: 9997 }}
         >
           <div
             ref={containerRef}
+            className="dialog-scrim is-archive"
             onClick={e => { if (e.target === e.currentTarget) onClose() }}
-            style={{ display: 'flex', position: 'absolute', inset: 0, background: 'rgba(15,15,15,.45)', backdropFilter: 'blur(12px)', alignItems: 'flex-start', justifyContent: 'center', padding: '40px 20px', overflowY: 'auto' }}
           >
             <motion.div
-              initial={{ opacity: 0, scale: 0.96, y: 12 }}
-              animate={{ opacity: 1, scale: 1, y: 0, transition: { duration: 0.28, ease: [0.23, 1, 0.32, 1] } }}
-              exit={{ opacity: 0, scale: 0.97, y: 8, transition: { duration: 0.18, ease: [0.77, 0, 0.175, 1] } }}
-              style={{ width: 'min(960px,96vw)', background: '#fff', border: '1px solid rgb(15 15 15 / 0.12)', borderRadius: 8, boxShadow: '0 24px 60px rgb(15 15 15 / 0.18)' }}
+              className="dialog-panel"
+              style={{ width: 'min(960px,96vw)' }}
+              initial={modalPanel.initial}
+              animate={modalPanel.animate}
+              exit={modalPanel.exit}
             >
               <div
                 ref={panelRef}
@@ -46,7 +48,9 @@ export default function ArchiveModal({ open, onClose }) {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     <span id="archive-title" className="font-headline text-2xl text-on-surface">{t.a11y_archive}</span>
                   </div>
-                  <button type="button" onClick={onClose} aria-label={t.a11y_close} style={{ background: 'none', border: 'none', color: '#575757', fontSize: 18, cursor: 'pointer', padding: '0 4px', lineHeight: 1 }}>✕</button>
+                  <button type="button" className="dialog-close" onClick={onClose} aria-label={t.a11y_close}>
+                    ✕
+                  </button>
                 </div>
 
                 <div style={{ padding: '16px 24px 0', display: 'flex', gap: 8, borderBottom: '1px solid rgb(15 15 15 / 0.08)' }} role="group" aria-label="Filter">
@@ -56,18 +60,7 @@ export default function ArchiveModal({ open, onClose }) {
                       key={f}
                       onClick={() => setFilter(f)}
                       aria-pressed={filter === f}
-                      style={{
-                        fontFamily: 'Inter,system-ui,sans-serif',
-                        fontSize: 13,
-                        fontWeight: 600,
-                        padding: '8px 16px',
-                        background: filter === f ? '#0f0f0f' : 'transparent',
-                        color: filter === f ? '#fff' : '#575757',
-                        border: filter === f ? 'none' : '1px solid rgb(15 15 15 / 0.12)',
-                        borderRadius: 9999,
-                        cursor: 'pointer',
-                        marginBottom: 16,
-                      }}
+                      className={`chip-filter${filter === f ? ' is-active' : ''}`}
                     >
                       {f.toUpperCase()}
                     </button>
@@ -91,17 +84,14 @@ export default function ArchiveModal({ open, onClose }) {
 }
 
 function ArchiveCard({ project: p, lang }) {
-  const [hover, setHover] = useState(false)
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.96 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.15, ease: [0.77, 0, 0.175, 1] } }}
-      transition={{ duration: 0.3, ease: [0.23, 1, 0.32, 1] }}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
-      style={{ background: hover ? '#fdda24' : '#fff', border: '1px solid rgb(15 15 15 / 0.12)', borderRadius: 4, padding: 20, display: 'flex', flexDirection: 'column', gap: 12, transition: 'background .2s' }}
+      className="archive-card"
+      initial={{ opacity: 0, transform: 'scale(0.97)' }}
+      animate={{ opacity: 1, transform: 'scale(1)' }}
+      exit={{ opacity: 0, transform: 'scale(0.97)', transition: { duration: 0.15, ease: [0.77, 0, 0.175, 1] } }}
+      transition={{ duration: 0.22, ease: EASE_OUT }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <span style={{ fontFamily: 'IBM Plex Mono,ui-monospace,monospace', fontSize: 11, color: '#0f0f0f', letterSpacing: '.04em' }}>{p.tag.toUpperCase()}</span>
@@ -113,7 +103,7 @@ function ArchiveCard({ project: p, lang }) {
       <p style={{ fontFamily: 'Inter,system-ui,sans-serif', fontSize: '.9rem', color: 'rgb(15 15 15 / 0.7)', lineHeight: 1.6, margin: 0, flex: 1 }}>{p.desc[lang]}</p>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
         {p.stack.map(s => (
-          <span key={s} style={{ fontFamily: 'Inter,system-ui,sans-serif', fontSize: 11, color: '#0f0f0f', background: hover ? 'rgba(15,15,15,.08)' : '#f6f6f6', padding: '2px 8px', borderRadius: 9999 }}>{s}</span>
+          <span key={s} className="archive-chip">{s}</span>
         ))}
       </div>
     </motion.div>

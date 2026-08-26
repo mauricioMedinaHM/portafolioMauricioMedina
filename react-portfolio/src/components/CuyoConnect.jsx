@@ -27,8 +27,7 @@ export default function CuyoConnect() {
               href="https://cuyoconnect.com/"
               target="_blank"
               rel="noreferrer"
-              className="btn-primary"
-              style={{ background: '#fdda24', color: '#0f0f0f' }}
+              className="btn-primary is-accent"
             >
               <span>{t.cuyo_cta}</span>
               <ArrowUpRight className="h-4 w-4" aria-hidden="true" />

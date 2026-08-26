@@ -1,13 +1,12 @@
 import { useMemo, useRef } from 'react'
 import { motion, useInView } from 'motion/react'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { EASE_OUT as EASE } from '../../lib/motion'
 import { cx } from './cx'
 
 function isWhitespace(segment) {
   return segment.trim() === ''
 }
-
-const EASE = [0.22, 1, 0.36, 1]
 
 /**
  * Revelación suave palabra a palabra o letra a letra (BlurText de CuyoConnect, más quieto).
@@ -17,9 +16,9 @@ export default function BlurText({
   className,
   animateBy = 'letter',
   delay = 0,
-  segmentDelay = 0.045,
-  duration = 0.48,
-  blurAmount = 7,
+  segmentDelay = 0.028,
+  duration = 0.38,
+  blurAmount = 4,
 }) {
   const ref = useRef(null)
   const reduced = usePrefersReducedMotion()

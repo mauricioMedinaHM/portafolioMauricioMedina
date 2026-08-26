@@ -3,12 +3,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
+import { EASE_DRAWER, EASE_OUT, overlayExit, overlayTransition } from '../lib/motion'
 
 const PORTFOLIO_URL = 'https://portafolio-mauricio-medina.vercel.app/'
-const EASE_OUT = [0.23, 1, 0.32, 1]
-const EASE_IN = [0.32, 0.72, 0, 1]
-const LAYOUT_ID = 'qr-share'
-const LEAVE_MS = 150
 
 const TABS = [
   { href: '#about', key: 'nav_about', icon: User, id: 'about' },
@@ -22,19 +19,14 @@ export default function MobileBottomNav() {
   const reduced = usePrefersReducedMotion()
   const [active, setActive] = useState('about')
   const [qrOpen, setQrOpen] = useState(false)
-  const [qrLeaving, setQrLeaving] = useState(false)
   const fabRef = useRef(null)
   const closeRef = useRef(null)
   const wasOpen = useRef(false)
 
   const closeQr = useCallback(() => {
-    if (!qrOpen || qrLeaving) return
-    if (reduced) {
-      setQrOpen(false)
-      return
-    }
-    setQrLeaving(true)
-  }, [qrOpen, qrLeaving, reduced])
+    if (!qrOpen) return
+    setQrOpen(false)
+  }, [qrOpen])
 
   useEffect(() => {
     const ids = TABS.map((tab) => tab.id)
@@ -68,15 +60,6 @@ export default function MobileBottomNav() {
   }, [qrOpen, closeQr])
 
   useEffect(() => {
-    if (!qrLeaving) return undefined
-    const id = window.setTimeout(() => {
-      setQrOpen(false)
-      setQrLeaving(false)
-    }, LEAVE_MS)
-    return () => window.clearTimeout(id)
-  }, [qrLeaving])
-
-  useEffect(() => {
     if (qrOpen) {
       wasOpen.current = true
       closeRef.current?.focus()
@@ -88,8 +71,7 @@ export default function MobileBottomNav() {
 
   const left = TABS.slice(0, 2)
   const right = TABS.slice(2)
-  const openDuration = reduced ? 0 : 0.42
-  const closeDuration = reduced ? 0 : 0.32
+  const duration = reduced ? 0 : 0.32
 
   const renderTab = (tab) => {
     const Icon = tab.icon
@@ -126,23 +108,23 @@ export default function MobileBottomNav() {
       >
         {left.map(renderTab)}
         <div className="mob-tab-cv">
-          {!qrOpen && (
-            <motion.button
-              ref={fabRef}
-              type="button"
-              layoutId={LAYOUT_ID}
-              className="btn-cv-fab"
-              aria-expanded={false}
-              aria-label={t.qr_share}
-              onClick={() => setQrOpen(true)}
-              whileTap={reduced ? undefined : { scale: 0.92 }}
-              transition={{ duration: closeDuration, ease: EASE_IN }}
-            >
-              <span className="qr-fab-icon">
-                <QrCode size={20} strokeWidth={2} aria-hidden="true" />
-              </span>
-            </motion.button>
-          )}
+          <motion.button
+            ref={fabRef}
+            type="button"
+            className="btn-cv-fab"
+            aria-expanded={qrOpen}
+            aria-label={t.qr_share}
+            tabIndex={qrOpen ? -1 : 0}
+            style={{ pointerEvents: qrOpen ? 'none' : 'auto' }}
+            onClick={() => setQrOpen(true)}
+            animate={{ opacity: qrOpen ? 0 : 1 }}
+            transition={{ duration: reduced ? 0 : 0.2, ease: EASE_OUT }}
+            whileTap={qrOpen || reduced ? undefined : { scale: 0.97 }}
+          >
+            <span className="qr-fab-icon">
+              <QrCode size={20} strokeWidth={2} aria-hidden="true" />
+            </span>
+          </motion.button>
         </div>
         {right.map(renderTab)}
       </nav>
@@ -156,28 +138,24 @@ export default function MobileBottomNav() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: reduced ? 0 : 0.22, ease: EASE_OUT }}
+            transition={qrOpen ? overlayTransition : overlayExit}
             onClick={closeQr}
           />
         )}
       </AnimatePresence>
-      {qrOpen && (
-        <motion.div
-          layoutId={LAYOUT_ID}
-          className="qr-screen"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="qr-screen-title"
-          transition={{
-            duration: qrLeaving ? closeDuration : openDuration,
-            ease: qrLeaving ? EASE_IN : EASE_OUT,
-          }}
-        >
+      <AnimatePresence>
+        {qrOpen && (
           <motion.div
-            className="qr-screen-inner"
-            initial={reduced ? false : { opacity: 0 }}
-            animate={{ opacity: qrLeaving ? 0 : 1 }}
-            transition={{ duration: reduced ? 0 : 0.16, delay: reduced || qrLeaving ? 0 : 0.16, ease: EASE_OUT }}
+            key="qr-screen"
+            className="qr-screen"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="qr-screen-title"
+            initial={reduced ? false : { opacity: 0, transform: 'translateY(12px) scale(0.96)' }}
+            animate={{ opacity: 1, transform: 'translateY(0) scale(1)' }}
+            exit={{ opacity: 0, transform: 'translateY(8px) scale(0.97)' }}
+            transition={{ duration, ease: qrOpen ? EASE_OUT : EASE_DRAWER }}
+            style={{ originX: 0.5, originY: 1 }}
           >
             <button
               ref={closeRef}
@@ -188,20 +166,22 @@ export default function MobileBottomNav() {
             >
               <X size={20} strokeWidth={1.75} aria-hidden="true" />
             </button>
-            <div className="qr-screen-panel">
-              <img
-                src="/img/portfolio-qr.svg"
-                alt=""
-                width="280"
-                height="280"
-                className="qr-fab-img"
-              />
-              <p id="qr-screen-title" className="qr-fab-hint">{t.qr_hint}</p>
-              <span className="sr-only">{PORTFOLIO_URL}</span>
+            <div className="qr-screen-inner">
+              <div className="qr-screen-panel">
+                <img
+                  src="/img/portfolio-qr.svg"
+                  alt=""
+                  width="280"
+                  height="280"
+                  className="qr-fab-img"
+                />
+                <p id="qr-screen-title" className="qr-fab-hint">{t.qr_hint}</p>
+                <span className="sr-only">{PORTFOLIO_URL}</span>
+              </div>
             </div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
+      </AnimatePresence>
     </>
   )
 }

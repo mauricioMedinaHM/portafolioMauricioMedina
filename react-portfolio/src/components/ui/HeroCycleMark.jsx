@@ -1,14 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { AnimatePresence, motion, useInView } from 'motion/react'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { EASE_OUT as EASE } from '../../lib/motion'
 import Highlighter from './Highlighter'
 
-const EASE = [0.22, 1, 0.36, 1]
 const MARKER = '#ffec6b'
-const LETTER_STAGGER = 0.048
-const LETTER_DURATION = 0.46
-const EXIT_DURATION = 0.36
-const BLUR = 6
+const LETTER_STAGGER = 0.036
+const LETTER_DURATION = 0.38
+const EXIT_DURATION = 0.2
+const BLUR = 4
 const HOLD_AFTER_MARK_MS = 2800
 const MARK_DURATION = 2000
 const MARK_DELAY_PAD = 220
@@ -63,8 +63,8 @@ export default function HeroCycleMark({ words }) {
           key={word}
           className="hero-cycle-word"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          animate={{ opacity: 1, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, filter: `blur(${BLUR}px)` }}
           transition={{ duration: EXIT_DURATION, ease: EASE }}
         >
           <Highlighter

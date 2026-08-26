@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'motion/react'
 import { useLang } from '../context/LanguageContext'
-import { revealVariants, viewportOnce } from '../hooks/useScrollReveal'
+import { staggerContainer, staggerItem, viewportOnce } from '../hooks/useScrollReveal'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 const slides = [
@@ -66,24 +66,24 @@ export default function Community() {
 
   return (
     <section ref={sectionRef} id="community" className="scope-section">
-      <div className="max-w-6xl mx-auto">
-        <motion.div
-          variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-          className="flex items-center gap-4 mb-6"
-        >
+      <motion.div
+        className="max-w-6xl mx-auto"
+        variants={staggerContainer}
+        initial="hidden"
+        whileInView="visible"
+        viewport={viewportOnce}
+      >
+        <motion.div variants={staggerItem} className="flex items-center gap-4 mb-6">
           <h2 className="sec-title">{t.community_title}</h2>
           <div className="divider" />
         </motion.div>
 
-        <motion.p
-          variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
-          className="font-body text-base text-outline mb-12"
-        >
+        <motion.p variants={staggerItem} className="font-body text-base text-outline mb-12">
           {t.community_sub}
         </motion.p>
 
         <motion.div
-          variants={revealVariants} initial="hidden" whileInView="visible" viewport={viewportOnce}
+          variants={staggerItem}
           className="relative mx-auto"
           id="carousel-section"
           aria-roledescription="carousel"
@@ -105,8 +105,7 @@ export default function Community() {
               {slides.map((s, i) => (
                 <div
                   key={i}
-                  className="absolute inset-0 transition-opacity duration-700"
-                  style={{ opacity: i === current ? 1 : 0, zIndex: i === current ? 2 : 1 }}
+                  className={`carousel-slide${i === current ? ' is-active' : ''}`}
                   aria-hidden={i !== current}
                 >
                   <img src={s.src} alt={i === current ? s.caption : ''} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top' }} />
@@ -130,7 +129,7 @@ export default function Community() {
                 onClick={() => goTo(i)}
                 aria-label={`${t.a11y_goto_slide} ${i + 1}`}
                 aria-current={i === current ? 'true' : undefined}
-                style={{ width: 8, height: 8, borderRadius: '50%', background: i === current ? '#fdda24' : '#cfcfcf', border: 'none', cursor: 'pointer', transition: 'background .3s' }}
+                className={`carousel-dot${i === current ? ' is-active' : ''}`}
               />
             ))}
           </div>
@@ -143,40 +142,26 @@ export default function Community() {
                 onClick={() => goTo(i)}
                 aria-label={`${t.a11y_goto_slide} ${i + 1}`}
                 aria-current={i === current ? 'true' : undefined}
-                style={{ height: 60, cursor: 'pointer', border: `1px solid ${i === current ? '#0f0f0f' : 'transparent'}`, overflow: 'hidden', opacity: i === current ? 1 : 0.5, transition: 'border-color .3s,opacity .3s', padding: 0, background: 'none', borderRadius: 4 }}
+                className={`carousel-thumb${i === current ? ' is-active' : ''}`}
               >
                 <img src={s.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
               </button>
             ))}
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </section>
   )
 }
 
 function CarouselArrow({ direction, onClick, label }) {
-  const [hover, setHover] = useState(false)
   const isLeft = direction === 'left'
   return (
     <button
       type="button"
       onClick={onClick}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
       aria-label={label}
-      className="absolute top-1/2 -translate-y-1/2 z-20 flex items-center justify-center"
-      style={{
-        [isLeft ? 'left' : 'right']: 16,
-        width: 44, height: 44,
-        background: hover ? '#fdda24' : 'rgba(15,15,15,.72)',
-        border: 'none',
-        color: hover ? '#0f0f0f' : '#fff',
-        borderRadius: 9999,
-        marginTop: 8,
-        cursor: 'pointer',
-        transition: 'background .2s, color .2s',
-      }}
+      className={`carousel-arrow${isLeft ? ' is-left' : ' is-right'}`}
     >
       <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
         {isLeft
